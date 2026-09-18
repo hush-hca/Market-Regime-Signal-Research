@@ -24,3 +24,7 @@ Streamlit's AppTest successfully renders all five pages, switches the forward ho
 ## Deferred scope
 
 No automatic scheduled/incremental ingestion, direct paid on-chain integration, historical options quote backtest, production deployment, portfolio optimization, automated feature ablation or independently reconstructed point-in-time archive is claimed. See the README for assumptions and setup.
+
+## Korean localization follow-up
+
+The expanded suite passes 16 tests. Language tests verify Korean tabs and warnings, canonical data preservation, unchanged metric values and retained horizon/fee settings when switching both ways. Browser inspection verified Korean selections, chart legends and tables. Metric cards now wrap at narrow widths. Export schemas and raw provenance identifiers remain stable in English; framework controls and raw diagnostic details may remain English.

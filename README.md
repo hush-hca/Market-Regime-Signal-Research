@@ -1,5 +1,9 @@
 # Regime Atlas
 
+[한국어 설명](README.ko.md) · [운영 전환 로드맵](docs/roadmap.ko.md)
+
+Use **Language / 언어** in the sidebar to switch between English and Korean. Display labels, explanations, charts and validation messages are localized; canonical CSV fields and research identifiers remain unchanged. Widget selections survive language changes. Some built-in Streamlit/Plotly controls and raw technical details remain in English.
+
 **AI market regime identification and signal research for BTC.** A Streamlit dashboard combining causal features, walk-forward clustering, transparent conditional statistics and an explicit long/cash ledger.
 
 The default dataset is **synthetic and prominently labeled**. Fetch public exchange history or upload licensed data for market research. The covered-call page is a payoff simulator, not a historical options backtest.
