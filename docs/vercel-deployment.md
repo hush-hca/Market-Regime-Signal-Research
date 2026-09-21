@@ -10,7 +10,7 @@ From the repository root, with an authenticated Vercel CLI:
 npx vercel deploy --yes
 ```
 
-Vercel detects `Dockerfile.vercel`, builds the image in its hosted build environment, and routes traffic to the container. Once preview checks pass, deploy to production:
+`vercel.json` explicitly selects `Dockerfile.vercel` as the dashboard container service and routes traffic to it. This avoids the existing project's Python framework preset producing an empty static build. Vercel builds the image in its hosted environment. Once preview checks pass, deploy to production:
 
 ```powershell
 npx vercel deploy --prod --yes
