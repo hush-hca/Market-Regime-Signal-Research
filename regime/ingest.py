@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import time
 import pandas as pd
@@ -16,7 +17,7 @@ class Client:
     def __init__(self, venue, raw_dir='data/raw'):
         self.venue = venue
         self.base = {'binance':'https://fapi.binance.com', 'bybit':'https://api.bybit.com'}[venue]
-        self.raw = Path(raw_dir) / venue
+        self.raw = Path(os.environ.get('REGIME_RAW_DIR',raw_dir)) / venue
         self.raw.mkdir(parents=True, exist_ok=True)
         self.session = requests.Session()
         self.session.mount('https://', HTTPAdapter(max_retries=Retry(total=3, backoff_factor=1,

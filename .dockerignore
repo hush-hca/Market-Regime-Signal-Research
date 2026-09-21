@@ -1,0 +1,8 @@
+**
+!Dockerfile.vercel
+!requirements-lock.txt
+!app.py
+!regime/
+!regime/*.py
+!.streamlit/
+!.streamlit/config.toml

@@ -10,6 +10,8 @@ The default dataset is **synthetic and prominently labeled**. Fetch public excha
 
 ## Quick start
 
+For Vercel, see [container deployment and verification](docs/vercel-deployment.md). The configuration uses Vercel's container/WebSocket beta; sessions and runtime files are ephemeral, and remote behavior must be verified after deployment.
+
 Python 3.12 is the tested runtime. Run from the repository root:
 
 ```bash

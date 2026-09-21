@@ -1,6 +1,14 @@
 import pandas as pd
 import pytest
 from regime.ingest import download, funding_daily, DAY
+from regime.ingest import Client
+
+def test_hosted_raw_snapshots_use_configured_temporary_directory(tmp_path,monkeypatch):
+    monkeypatch.setenv('REGIME_RAW_DIR',str(tmp_path/'raw'))
+    client=Client('bybit')
+    assert client.raw==tmp_path/'raw'/'bybit'
+    assert client.raw.is_dir()
+    client.session.close()
 
 class FakeClient:
     def __init__(self,venue):
