@@ -16,7 +16,7 @@ def test_dashboard_snapshot_and_controls_render(market_snapshot):
     next(s for s in app.selectbox if s.label=='Accounting').select('Perpetual with daily funding').run()
     assert not app.exception
 
-def test_missing_snapshot_never_falls_back_to_synthetic(tmp_path,monkeypatch):
+def test_missing_local_snapshot_uses_bundled_real_data(tmp_path,monkeypatch):
     monkeypatch.chdir(tmp_path)
     import regime.feed
     import streamlit as st
@@ -25,6 +25,7 @@ def test_missing_snapshot_never_falls_back_to_synthetic(tmp_path,monkeypatch):
     monkeypatch.setattr(regime.feed,'download',offline)
     app=AppTest.from_file(str(Path(__file__).parents[1]/'app.py'),default_timeout=60).run()
     assert not app.exception
-    assert not app.metric
+    assert len(app.metric)==4
     assert not any('SYNTHETIC DEMO' in warning.value for warning in app.warning)
-    assert any('no verified real snapshot' in message.value for message in app.error)
+    assert any('Refresh failed' in message.value for message in app.warning)
+    assert any('2026-09-17' in message.value for message in app.info)

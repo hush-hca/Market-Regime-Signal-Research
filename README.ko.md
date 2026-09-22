@@ -21,6 +21,8 @@ streamlit run app.py
 
 실제 데이터를 저장하려면:
 
+배포 이미지에는 **2026-09-17 UTC까지의 실제 Bybit 일봉 730개**도 포함합니다. API 조회에 실패하고 로컬 저장 데이터가 없으면 이 과거 스냅샷을 사용합니다. 화면에 실패 경고와 원래 기준일을 표시하며 실시간 데이터로 취급하지 않습니다. `bootstrap/bybit.json`에 출처·수집 시각·파일 무결성 해시가 기록되어 있습니다.
+
 ```powershell
 python -m regime.ingest --venue bybit --days 730
 ```

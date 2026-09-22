@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir -r requirements-lock.txt
 
 COPY app.py ./app.py
 COPY regime/ ./regime/
+COPY bootstrap/ ./bootstrap/
 COPY .streamlit/config.toml ./.streamlit/config.toml
 
 EXPOSE 80

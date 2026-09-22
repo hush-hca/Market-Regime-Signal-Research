@@ -35,9 +35,11 @@ def choice(target,label,options,index=0):
 def show_error(exc, warning=False):
     message=error_text(exc,language)
     (st.warning if warning else st.error)(message)
-    if message!=str(exc):
+    if message!=str(exc) or exc.__cause__ is not None:
         with st.expander(t('Technical details')):
             st.code(str(exc),language=None)
+            if exc.__cause__ is not None:
+                st.code(f'{type(exc.__cause__).__name__}: {exc.__cause__}',language=None)
 
 st.markdown('''<style>
 .block-container {padding-top:4rem; max-width:1500px}

@@ -23,7 +23,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The default API view needs outbound network access to Bybit; regional restrictions may prevent access. Saved snapshots work without network access after collection. Raw market data is not committed to Git. If both API access and a valid snapshot are unavailable, upload a CSV or retry the API; the app never generates replacement prices.
+The default API view needs outbound network access to Bybit; regional restrictions may prevent access. A small **real historical fallback** is included in `bootstrap/` and copied into the deployment image: 730 Bybit BTCUSDT daily bars through **2026-09-17 UTC**, collected on 2026-09-18. Its metadata records source, retrieval time and SHA-256 integrity digest. If API access fails, the app first tries a verified local snapshot, then this bundled snapshot, always showing a warning and the data date. It never presents this archive as live or generates replacement prices. Other raw responses and local snapshots remain excluded from Git.
 
 For the exact tested environment, install `requirements-lock.txt` instead. The lock was generated on Windows/Python 3.12; use the supported ranges in `requirements.txt` if platform-specific transitive packages need different resolution.
 

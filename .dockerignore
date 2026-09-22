@@ -4,5 +4,8 @@
 !app.py
 !regime/
 !regime/*.py
+!bootstrap/
+!bootstrap/bybit.parquet
+!bootstrap/bybit.json
 !.streamlit/
 !.streamlit/config.toml

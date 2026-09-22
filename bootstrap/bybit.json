@@ -1,0 +1,13 @@
+{
+  "source": "bybit",
+  "symbol": "BTCUSDT",
+  "downloaded_at": "2026-09-18T17:33:17.249158+00:00",
+  "oi_note": "Bybit native BTC OI converted to USD with daily open; venue-reported coverage.",
+  "price_instrument": "USDT perpetual",
+  "volume_unit": "USDT quote turnover",
+  "funding_unit": "sum of realized funding fractions per UTC day",
+  "synthetic": false,
+  "note": "Current-vintage API history; publication delays and historical revisions are not independently reconstructed.",
+  "sha256": "24c1d8ee8518fdd9ee06325832a591a9438bb452e5015e9af53bea7f2dabd96e",
+  "purpose": "Bundled historical real-data fallback, not a live market feed"
+}
