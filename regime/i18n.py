@@ -144,6 +144,8 @@ def translate(text, language='en'):
 
 def error_text(error, language='en'):
     text=str(error)
+    if language=='ko' and text.startswith('Exchange data unavailable and no verified real snapshot exists. Redeploy'):
+        return '거래소 연결과 실제 스냅샷 로딩에 실패했습니다. bootstrap/bybit.parquet 및 bootstrap/bybit.json이 포함된 최신 저장소를 다시 배포하세요. 기술 세부 정보에서 누락 경로 또는 검증 오류를 확인할 수 있습니다.'
     translated=translate(text,language)
     if translated!=text or language!='ko':
         return translated

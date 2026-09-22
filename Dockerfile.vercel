@@ -14,5 +14,8 @@ COPY regime/ ./regime/
 COPY bootstrap/ ./bootstrap/
 COPY .streamlit/config.toml ./.streamlit/config.toml
 
+# Fail the deployment build if its offline real-data fallback is absent or corrupt.
+RUN python -c "from regime.feed import BUNDLED_SNAPSHOT, read_snapshot; frame, meta = read_snapshot(BUNDLED_SNAPSHOT, require_digest=True); print('Verified bundled real market data:', meta['source'], len(frame), frame.date.max())"
+
 EXPOSE 80
 CMD ["sh", "-c", "exec python -m streamlit run app.py --server.address=0.0.0.0 --server.port=${PORT:-80} --server.headless=true --browser.gatherUsageStats=false --server.maxUploadSize=4"]

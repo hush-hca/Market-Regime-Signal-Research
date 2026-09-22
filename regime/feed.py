@@ -23,23 +23,31 @@ def read_snapshot(path, require_digest=False):
 
 def load_market(snapshot='data/market.parquet', bundled_snapshot=BUNDLED_SNAPSHOT):
     last_error=None
+    diagnostics=[]
     for venue in ['bybit','binance']:
         try:
             frame,meta=download(venue,730)
             return validate(frame),meta,None
         except Exception as exc:
             last_error=exc
+            diagnostics.append(f'{venue}: {type(exc).__name__}: {exc}')
             logging.getLogger(__name__).warning('%s refresh failed: %s: %s',venue,type(exc).__name__,exc)
     for candidate,require_digest in [(snapshot,False),(bundled_snapshot,True)]:
         if candidate is None:
             continue
         path=Path(candidate)
         if not path.exists() or not path.with_suffix('.json').exists():
+            diagnostics.append(f'Snapshot or provenance file missing: {path.resolve()}')
             continue
         try:
             frame,meta=read_snapshot(path,require_digest)
         except (ValueError,OSError) as invalid:
+            diagnostics.append(f'Snapshot rejected: {path.resolve()}: {invalid}')
             logging.getLogger(__name__).warning('Rejected snapshot %s: %s',path,invalid)
             continue
         return frame,meta,'Refresh failed. Showing the saved real exchange snapshot; check its date.'
-    raise RuntimeError('Exchange data unavailable and no verified real snapshot exists.') from last_error
+    detail=RuntimeError('\n'.join(diagnostics))
+    detail.__cause__=last_error
+    raise RuntimeError('Exchange data unavailable and no verified real snapshot exists. '
+        'Redeploy the latest repository including bootstrap/bybit.parquet and bootstrap/bybit.json. '
+        'See Technical details for the missing file or validation failure.') from detail
