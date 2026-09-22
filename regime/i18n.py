@@ -186,3 +186,24 @@ def translate_figure(fig, language='en'):
     if fig.layout.legend.title:
         fig.layout.legend.title.text=t(fig.layout.legend.title.text)
     return fig
+
+KO.update({
+'On-chain source':'온체인 데이터 소스',
+'Coin Metrics (noncommercial)':'Coin Metrics (비상업적 이용)',
+'CSV only / off':'CSV만 사용 / 끄기',
+'Coin Metrics · CC BY-NC 4.0 · noncommercial research only.':'Coin Metrics · CC BY-NC 4.0 · 비상업적 연구 전용.',
+'MVRV and net flows: assumed 48-hour lag; revised historical data. SOPR is unavailable from this free source.':'MVRV·순유입: 48시간 지연 가정, 사후 수정된 과거 데이터입니다. 이 무료 소스는 SOPR을 제공하지 않습니다.',
+'On-chain fallback in use. Check observation_end in the data manifest.':'온체인 대체 데이터를 사용 중입니다. 데이터 명세의 observation_end를 확인하세요.',
+'On-chain data unavailable; price and derivatives remain usable.':'온체인 데이터를 가져오지 못했습니다. 가격·파생상품 분석은 계속 사용할 수 있습니다.',
+'Include on-chain features (exploratory)':'온체인 특성 포함 (탐색적 분석)',
+'On-chain observations aligned to market dates':'시장 날짜에 맞춘 온체인 관측값',
+'Net flows are USD deposits minus withdrawals. A negative value does not prove buying. Missing observations stay missing.':'순유입은 달러 기준 입금에서 출금을 뺀 값입니다. 음수가 매수를 입증하지는 않습니다. 결측값은 그대로 유지합니다.',
+'On-chain chart':'온체인 차트',
+'Deribit public BTC call quotes':'Deribit 공개 BTC 콜옵션 호가',
+'Current quotes only; no historical option returns. Target: 30 days ± 14, nearest 110% strike among OTM calls.':'현재 호가이며 과거 옵션 수익률이 아닙니다. 목표: 만기 30일 ± 14일, 외가격 콜 중 110%에 가장 가까운 행사가.',
+'Fetch current option quote':'현재 옵션 호가 가져오기',
+'Inverse BTC settlement; premium retained in BTC. Gross expiry scenario using bid, zero fees. Execution and collateral effects are not modeled.':'BTC 역방향 결제, 프리미엄은 BTC로 보유합니다. 매수호가·수수료 0 기준 만기 시나리오이며 체결 및 담보 효과는 반영하지 않습니다.',
+'Download timestamped option quotes':'조회 시각이 기록된 옵션 호가 다운로드',
+})
+
+KO["Bybit → Binance → verified snapshot · completed daily bars · one-hour cache."]="Bybit → Binance → 검증된 스냅샷 · 완료된 일봉 · 1시간 캐시."

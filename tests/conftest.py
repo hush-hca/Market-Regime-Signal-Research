@@ -19,3 +19,10 @@ def market_snapshot(tmp_path,monkeypatch):
     }))
     import streamlit as st
     st.cache_data.clear()
+
+@pytest.fixture(autouse=True)
+def offline_onchain(monkeypatch):
+    import regime.onchain
+    def unavailable(*args,**kwargs):
+        raise ConnectionError('isolated UI test; on-chain adapter tested separately')
+    monkeypatch.setattr(regime.onchain,'load_coinmetrics',unavailable)

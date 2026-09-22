@@ -12,6 +12,8 @@ import streamlit as st
 from regime.data import validate, enrich, quality
 from regime.ingest import download
 from regime.feed import load_market
+from regime.onchain import load_coinmetrics
+from regime.options import load_quotes, select_call, inverse_call_payoff
 from regime.research import Config, features, walk_forward, events, summarize, strategy, payoff
 from regime.i18n import translate, error_text, display_frame, translate_figure
 
@@ -56,6 +58,14 @@ COLORS={'Defensive':'#ff7d85','Soft / mixed':'#d5a65e','Firm / mixed':'#719cff',
 def exchange_data():
     return load_market()
 
+@st.cache_data(ttl=21600,show_spinner=False)
+def onchain_data(start,end):
+    return load_coinmetrics(start,end)
+
+@st.cache_data(ttl=60,show_spinner=False)
+def option_quotes():
+    return load_quotes()
+
 @st.cache_data(show_spinner=False)
 def analyze(d, oi, chain):
     f=features(d,oi,chain)
@@ -82,7 +92,7 @@ with st.sidebar:
         if source=='Exchange data':
             if st.button(t('Refresh exchange data'),key='refresh_exchange'):
                 exchange_data.clear()
-            st.caption(t('Bybit BTCUSDT · completed daily bars · cached for up to one hour.'))
+            st.caption(t('Bybit → Binance → verified snapshot · completed daily bars · one-hour cache.'))
             with st.spinner(t('Fetching price, funding and available OI…')):
                 d,meta,notice=exchange_data()
             if notice:
@@ -107,15 +117,28 @@ with st.sidebar:
                     st.session_state['downloaded']=download(venue,days)
             if 'downloaded' in st.session_state:
                 d,meta=st.session_state['downloaded']
+        chain_source=choice(st,'On-chain source',['Coin Metrics (noncommercial)','CSV only / off'])
         chain_csv=st.file_uploader(t('Optional on-chain CSV'),type=['csv'],help=t('Requires available_at and mvrv, sopr or exchange_netflow. Only use data you are licensed to process.'), key='Optional on-chain CSV')
         if d is not None and chain_csv:
             d=enrich(d,chain_csv.getvalue().decode('utf-8-sig'))
             meta={**meta,'onchain':'user upload; availability timestamps supplied by user'}
+        elif d is not None and chain_source=='Coin Metrics (noncommercial)':
+            try:
+                chain,chain_meta=onchain_data(d.date.min(),d.date.max())
+                d=enrich(d,chain.to_csv(index=False))
+                meta['onchain']=chain_meta
+                st.caption(t('Coin Metrics · CC BY-NC 4.0 · noncommercial research only.'))
+                st.caption(t('MVRV and net flows: assumed 48-hour lag; revised historical data. SOPR is unavailable from this free source.'))
+                if chain_meta['fallback_used']:
+                    st.warning(t('On-chain fallback in use. Check observation_end in the data manifest.'))
+            except Exception as chain_error:
+                st.warning(t('On-chain data unavailable; price and derivatives remain usable.'))
+                with st.expander(t('Technical details')): st.code(str(chain_error))
     except Exception as exc:
         show_error(exc)
         d=None
     include_oi=st.checkbox(t('Include OI features'),value=False,help=t('Requires at least 180 complete training rows. Recent-only Binance OI is insufficient.'), key='Include OI features')
-    include_chain=st.checkbox(t('Include uploaded on-chain features'),value=False, key='Include uploaded on-chain features')
+    include_chain=st.checkbox(t('Include on-chain features (exploratory)'),value=False, key='Include uploaded on-chain features')
     st.divider()
     audience=choice(st,'Presentation focus',['Research team','Exchange','Options team'])
     st.caption(t('Fixed model: four clusters · 365-day warm-up · 90-day refits · final 180-day frozen holdout.'))
@@ -153,6 +176,16 @@ st.caption(t(t('{count} daily observations · {start} → {end} · Source: {sour
 tabs=st.tabs([t(name) for name in ['Overview','Historical outcomes','Strategy lab','Options payoff','Data & methodology']])
 
 with tabs[0]:
+    available_metrics=[name for name in ['mvrv','sopr','exchange_netflow'] if name in d]
+    if available_metrics:
+        st.subheader(t('On-chain observations aligned to market dates'))
+        columns=st.columns(len(available_metrics))
+        for column,name in zip(columns,available_metrics):
+            value=d[name].iloc[-1]
+            column.metric(t(name),f'{value:,.3f}' if pd.notna(value) else t('Missing'))
+        st.caption(t('Net flows are USD deposits minus withdrawals. A negative value does not prove buying. Missing observations stay missing.'))
+        metric=choice(st,'On-chain chart',available_metrics)
+        plot(px.line(d,x='date',y=metric))
     chart=d[['date','close']].join(r[['regime','partition']])
     fig=go.Figure(go.Scatter(x=chart.date,y=chart.close,line=dict(color='#50627e',width=1),name='BTC price',showlegend=False))
     for label,color in COLORS.items():
@@ -218,6 +251,22 @@ with tabs[2]:
         ledger=pd.DataFrame()
 
 with tabs[3]:
+    st.subheader(t('Deribit public BTC call quotes'))
+    st.caption(t('Current quotes only; no historical option returns. Target: 30 days ± 14, nearest 110% strike among OTM calls.'))
+    if st.button(t('Fetch current option quote'),key='fetch_options'):
+        try:
+            quotes=option_quotes()
+            selected=select_call(quotes)
+            st.dataframe(selected.to_frame('value').astype(str),width='stretch')
+            quoted_payoff=inverse_call_payoff(selected.spot_index,selected.strike,selected.bid_btc)
+            plot(px.line(quoted_payoff,x='terminal_price',y=['spot_return','covered_call_return']))
+            st.caption(t('Inverse BTC settlement; premium retained in BTC. Gross expiry scenario using bid, zero fees. Execution and collateral effects are not modeled.'))
+            quotes['regime']=latest.regime
+            quotes['regime_date']=str(d.date.max())
+            st.download_button(t('Download timestamped option quotes'),quotes.to_csv(index=False),'deribit-quotes.csv','text/csv')
+        except Exception as exc:
+            show_error(exc,warning=True)
+    st.divider()
     st.subheader(t('Covered-call payoff explorer'))
     st.info(t('SCENARIO SIMULATION — premiums are assumptions. This is not a historical options backtest, a quoted product, or a regime-specific return estimate.'))
     a,b,c=st.columns(3)

@@ -158,3 +158,9 @@ The sidebar changes the suggested presentation emphasis, without altering resear
 - **Options teams:** payoff assumptions, capped upside and requirements for a historical quote dataset.
 
 To deploy on a Streamlit-compatible host, install `requirements.txt` and use `app.py` as the entrypoint. Fetch a real snapshot on the host or use the public-API control; no exchange trading credentials are required. Raw data, credentials and local snapshots are ignored by Git.
+
+## Free real-data integrations
+
+Coin Metrics MVRV and USD exchange net flows now load automatically for noncommercial research (CC BY-NC 4.0). Optional on-chain model features remain exploratory and off by default because historical values may be revised. Bybit falls back to Binance, then verified real snapshots. The Options tab fetches current Deribit BTC call bids and exports timestamped quotes; it does not claim historical options returns.
+
+See [source research, licensing, limitations and production next steps](docs/free-data-sources.md).

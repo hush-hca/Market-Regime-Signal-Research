@@ -9,3 +9,5 @@ These are real Bybit BTCUSDT perpetual daily observations fetched through the ex
 - Used only when live refresh fails and no valid local snapshot exists. The app displays a failure warning, date and stale-data warning.
 
 This archive is intentionally historical. Update it using a verified real API collection, preserve its actual retrieval time, and recompute the digest if replacing the file. Never relabel it as current or substitute generated data.
+
+Coin Metrics snapshot: real Community API MVRV and exchange flows, CC BY-NC 4.0, attribution to Coin Metrics. See coinmetrics.json for original retrieval, range and checksum. These are current-vintage observations with an assumed 48h lag, not point-in-time records. Commercial use requires separate permission. https://github.com/coinmetrics/data

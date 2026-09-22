@@ -22,21 +22,24 @@ def read_snapshot(path, require_digest=False):
     return validate(pd.read_parquet(path)),meta
 
 def load_market(snapshot='data/market.parquet', bundled_snapshot=BUNDLED_SNAPSHOT):
-    try:
-        frame,meta=download('bybit',730)
-        return validate(frame),meta,None
-    except Exception as exc:
-        logging.getLogger(__name__).warning('Exchange refresh failed: %s: %s',type(exc).__name__,exc)
-        for candidate,require_digest in [(snapshot,False),(bundled_snapshot,True)]:
-            if candidate is None:
-                continue
-            path=Path(candidate)
-            if not path.exists() or not path.with_suffix('.json').exists():
-                continue
-            try:
-                frame,meta=read_snapshot(path,require_digest)
-            except (ValueError,OSError) as invalid:
-                logging.getLogger(__name__).warning('Rejected snapshot %s: %s',path,invalid)
-                continue
-            return frame,meta,'Refresh failed. Showing the saved real exchange snapshot; check its date.'
-        raise RuntimeError('Exchange data unavailable and no verified real snapshot exists.') from exc
+    last_error=None
+    for venue in ['bybit','binance']:
+        try:
+            frame,meta=download(venue,730)
+            return validate(frame),meta,None
+        except Exception as exc:
+            last_error=exc
+            logging.getLogger(__name__).warning('%s refresh failed: %s: %s',venue,type(exc).__name__,exc)
+    for candidate,require_digest in [(snapshot,False),(bundled_snapshot,True)]:
+        if candidate is None:
+            continue
+        path=Path(candidate)
+        if not path.exists() or not path.with_suffix('.json').exists():
+            continue
+        try:
+            frame,meta=read_snapshot(path,require_digest)
+        except (ValueError,OSError) as invalid:
+            logging.getLogger(__name__).warning('Rejected snapshot %s: %s',path,invalid)
+            continue
+        return frame,meta,'Refresh failed. Showing the saved real exchange snapshot; check its date.'
+    raise RuntimeError('Exchange data unavailable and no verified real snapshot exists.') from last_error

@@ -9,3 +9,6 @@
 !bootstrap/bybit.json
 !.streamlit/
 !.streamlit/config.toml
+
+!bootstrap/coinmetrics.parquet
+!bootstrap/coinmetrics.json

@@ -1,0 +1,12 @@
+{
+  "source": "Coin Metrics Community API",
+  "synthetic": false,
+  "url": "https://community-api.coinmetrics.io/v4/timeseries/asset-metrics",
+  "license": "CC BY-NC 4.0 \u00b7 Coin Metrics \u00b7 noncommercial use with attribution",
+  "retrieved_at": "2026-09-22T05:14:11.853887558+00:00",
+  "sha256": "9e403e7cfebfbadac98bc35e572a5be0816fe37c8a3049a39429b64127ecda51",
+  "rows": 751,
+  "observation_end": "2026-09-21 00:00:00+00:00",
+  "availability": "Assumed 48h lag, current-vintage, not point-in-time",
+  "metrics": "CapMVRVCur,FlowInExUSD,FlowOutExUSD"
+}
