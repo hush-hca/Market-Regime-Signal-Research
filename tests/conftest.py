@@ -27,3 +27,4 @@ def offline_onchain(monkeypatch):
         raise ConnectionError('isolated UI test; on-chain adapter tested separately')
     monkeypatch.setattr(regime.onchain,'load_coinmetrics',unavailable)
     monkeypatch.setattr(regime.feed,'read_repository_snapshot',unavailable)
+    monkeypatch.setattr(regime.onchain,'read_repository_snapshot',unavailable)

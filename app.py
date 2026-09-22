@@ -12,7 +12,7 @@ import streamlit as st
 from regime.data import validate, enrich, quality
 from regime.ingest import download
 from regime.feed import load_market
-from regime.onchain import load_coinmetrics
+from regime.onchain import load_onchain
 from regime.options import load_quotes, select_call, inverse_call_payoff
 from regime.signals import context_signals
 from regime.evaluation import evaluate_feature_sets
@@ -68,7 +68,7 @@ def exchange_data():
 
 @st.cache_data(ttl=21600,show_spinner=False)
 def onchain_data(start,end):
-    return load_coinmetrics(start,end)
+    return load_onchain(start,end)
 
 @st.cache_data(ttl=60,show_spinner=False)
 def option_quotes():
@@ -239,9 +239,15 @@ with tabs[0]:
                 st.markdown('**'+t('Units')+'**: '+t(units))
                 st.markdown('**'+t('How to read this chart')+'**: '+t(reading))
                 st.markdown('**'+t('What this cannot tell you')+'**: '+t(limitation))
-                st.caption(t('Source and freshness')+': '+str(meta.get('source'))+' · '+f'{d.date.max():%Y-%m-%d} UTC')
                 if name in ['MVRV & SOPR','Exchange net flows']:
+                    chain_source_meta=meta.get('onchain',{})
+                    if isinstance(chain_source_meta,dict):
+                        st.caption(t('Source and freshness')+': '+str(chain_source_meta.get('source',t('Missing')))+' · '+str(chain_source_meta.get('observation_end',t('Missing'))))
+                    else:
+                        st.caption(t('Source and freshness')+': '+str(chain_source_meta))
                     st.caption(t('On-chain source and original observation dates are recorded in Data & methodology. SOPR stays unavailable unless supplied.'))
+                else:
+                    st.caption(t('Source and freshness')+': '+str(meta.get('source'))+' · '+f'{d.date.max():%Y-%m-%d} UTC')
     st.subheader(t('Persistence & transitions'))
     observed=r[r.regime!='Unclassified'].copy()
     transition=pd.crosstab(observed.regime.shift(),observed.regime,normalize='index')

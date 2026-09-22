@@ -71,3 +71,18 @@ def test_merge_preserves_known_funding_and_excludes_open_day():
     assert result.funding.iloc[-1]==old.funding.iloc[-1]
     result=merge_market(old,update,old.date.max())
     assert len(result)==729
+
+
+def test_missing_settlements_are_reported_without_losing_quotes(tmp_path,monkeypatch):
+    import regime.collect as collect
+    from regime.store import read_latest
+    def offline(*args,**kwargs): raise ConnectionError('offline')
+    monkeypatch.setattr(collect,'download',offline)
+    monkeypatch.setattr(collect,'load_coinmetrics',offline)
+    quotes=pd.DataFrame({'instrument':['BTC-call'],'observed_at':[pd.Timestamp('2026-09-22',tz='UTC')]})
+    missing=pd.DataFrame(); missing.attrs['error']='settlement service offline'
+    monkeypatch.setattr(collect,'load_quote_archive',lambda:{'option_quotes':quotes,'option_settlements':missing})
+    report=collect.collect_once('2026-09-23T00:00:00Z',str(tmp_path))
+    assert report['datasets']['option_quotes']['status']=='ok'
+    assert report['datasets']['option_settlements']['status']=='error'
+    assert len(read_latest(tmp_path,'option_quotes')[0])==1

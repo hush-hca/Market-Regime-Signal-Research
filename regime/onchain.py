@@ -2,17 +2,38 @@
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 from urllib.parse import urlparse
 import numpy as np
 import pandas as pd
 from .public_sources import session, get_json
+from .repository import read_repository_snapshot
 
 API='https://community-api.coinmetrics.io/v4/timeseries/asset-metrics'
 ARCHIVE='https://raw.githubusercontent.com/coinmetrics/data/master/csv/btc.csv'
 BUNDLE=Path(__file__).resolve().parents[1]/'bootstrap'/'coinmetrics.parquet'
 METRICS='CapMVRVCur,FlowInExUSD,FlowOutExUSD'
 LICENSE='CC BY-NC 4.0 · Coin Metrics · noncommercial use with attribution'
+
+
+def load_onchain(start,end):
+    """Dashboard reader; the collector still calls the live-only adapter directly."""
+    from .store import read_latest
+    try:
+        root=os.environ.get('REGIME_SNAPSHOT_ROOT')
+        data,meta=read_latest(root,'onchain') if root else read_repository_snapshot('onchain')
+        stamp=pd.Timestamp(meta['retrieved_at'])
+        if pd.Timestamp.now(tz='UTC')-stamp>pd.Timedelta(hours=36):
+            raise ValueError('Collected on-chain snapshot is stale.')
+        lo=pd.Timestamp(start); hi=pd.Timestamp(end)
+        lo=lo.tz_localize('UTC') if lo.tzinfo is None else lo.tz_convert('UTC')
+        hi=hi.tz_localize('UTC') if hi.tzinfo is None else hi.tz_convert('UTC')
+        data=data[data.observation_time.between(lo-pd.Timedelta(days=3),hi)].copy()
+        if data.empty: raise ValueError('No collected on-chain coverage for selected dates.')
+        return data,{**meta,'delivery':'Collected snapshot','fallback_used':False}
+    except (OSError,ValueError,KeyError):
+        return load_coinmetrics(start,end)
 
 def normalize(rows,lag_days=2):
     """Lag is an assumption, not a claim of historical first-publication time."""

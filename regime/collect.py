@@ -64,9 +64,13 @@ def collect_once(as_of,root):
     try:
         archive=load_quote_archive()
         for dataset,frame in archive.items():
-            if not frame.empty:
+            try:
+                if frame.empty:
+                    raise ValueError(frame.attrs.get('error','No observations returned.'))
                 publish(dataset,frame,{'source':'deribit','vintage':'observed live',
                     'license':'Provider public API terms; review before redistribution'})
+            except (OSError,ValueError,KeyError) as exc:
+                report['datasets'][dataset]={'status':'error','error':f'{type(exc).__name__}: {exc}'}
     except Exception as exc:
         report['datasets']['options']={'status':'error','error':f'{type(exc).__name__}: {exc}'}
     atomic_json(Path(root)/'collection-status.json',report)

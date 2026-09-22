@@ -63,12 +63,17 @@ def load_quote_archive(client=None):
     terms['observed_at']=now
     terms['expiry']=pd.to_datetime(terms.expiration_timestamp,unit='ms',utc=True)
     terms=terms.rename(columns={'instrument_name':'instrument'})
-    deliveries=get_json(client,BASE+'get_delivery_prices',index_name='btc_usd',count=100)['result']['data']
-    settlements=pd.DataFrame(deliveries)
-    if not settlements.empty:
-        settlements['expiry']=pd.to_datetime(settlements.date,utc=True)+pd.Timedelta(hours=8)
-        settlements['index_name']='btc_usd'
-        settlements['observed_at']=now
+    try:
+        deliveries=get_json(client,BASE+'get_delivery_prices',index_name='btc_usd',count=100)['result']['data']
+        settlements=pd.DataFrame(deliveries)
+        if not settlements.empty:
+            settlements['expiry']=pd.to_datetime(settlements.date,utc=True)+pd.Timedelta(hours=8)
+            settlements['index_name']='btc_usd'
+            settlements['observed_at']=pd.Timestamp.now(tz='UTC')
+    except (OSError,ValueError,KeyError) as exc:
+        # Quotes cannot be reconstructed later; preserve them even if settlement refresh fails.
+        settlements=pd.DataFrame()
+        settlements.attrs['error']=f'{type(exc).__name__}: {exc}'
     return {'option_quotes':quotes,'option_instruments':terms,'option_settlements':settlements}
 
 def select_call(quotes,tenor=30,target_moneyness=1.10):

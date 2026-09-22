@@ -40,3 +40,17 @@ def test_feed_prefers_recent_configured_store(tmp_path,monkeypatch):
     monkeypatch.setattr(feed,'download',unexpected)
     data,meta,notice=feed.load_market()
     assert len(data)==730 and 'version_id' in meta and notice is None
+
+
+def test_onchain_uses_collected_snapshot_before_live_api(tmp_path,monkeypatch):
+    import regime.onchain as onchain
+    from regime.store import write_snapshot
+    now=pd.Timestamp.now(tz='UTC')
+    chain=onchain.normalize([{'time':str((now.normalize()-pd.Timedelta(days=2)).date()),'CapMVRVCur':'2'}])
+    write_snapshot(chain,dict(dataset='onchain',source='Coin Metrics Community API',synthetic=False,
+        retrieved_at=now.isoformat(),observation_end=chain.observation_time.max().isoformat()),tmp_path)
+    monkeypatch.setenv('REGIME_SNAPSHOT_ROOT',str(tmp_path))
+    def unexpected(*args,**kwargs): raise AssertionError('must use stored on-chain snapshot')
+    monkeypatch.setattr(onchain,'load_coinmetrics',unexpected)
+    frame,meta=onchain.load_onchain(now-pd.Timedelta(days=10),now)
+    assert len(frame)==1 and meta['delivery']=='Collected snapshot'

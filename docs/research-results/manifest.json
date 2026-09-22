@@ -24,7 +24,7 @@
     "availability": "Assumed 48h lag, current-vintage, not point-in-time",
     "metrics": "CapMVRVCur,FlowInExUSD,FlowOutExUSD"
   },
-  "build_id": "ee374db5aa04",
+  "build_id": "3ff0a998c576",
   "evaluation_status": "Exploratory; previously inspected holdout",
   "horizons": {
     "7": {

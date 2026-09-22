@@ -87,3 +87,21 @@ def test_dashboard_with_real_onchain_bundle(tmp_path,monkeypatch):
     assert not app.exception and len(app.metric)==6
     app.checkbox(key='Include uploaded on-chain features').check().run()
     assert not app.exception and len(app.tabs)==5 and not app.error
+
+
+def test_settlement_outage_preserves_quote_archive(monkeypatch):
+    import regime.options as options
+    now=pd.Timestamp.now(tz='UTC')
+    def response(client,url,**kwargs):
+        if url.endswith('get_instruments'):
+            return {'result':[dict(instrument_name='BTC-call',option_type='call',is_active=True,
+                settlement_currency='BTC',quote_currency='BTC',base_currency='BTC',contract_size=1,
+                expiration_timestamp=(now+pd.Timedelta(days=30)).value//10**6,strike=110)]}
+        if url.endswith('get_book_summary_by_currency'):
+            return {'result':[dict(instrument_name='BTC-call',bid_price=.03,ask_price=.04,creation_timestamp=now.value//10**6)]}
+        if url.endswith('get_index_price'): return {'result':{'index_price':100}}
+        raise ConnectionError('settlement endpoint offline')
+    monkeypatch.setattr(options,'get_json',response)
+    archive=options.load_quote_archive()
+    assert len(archive['option_quotes'])==1
+    assert archive['option_settlements'].empty and archive['option_settlements'].attrs['error']

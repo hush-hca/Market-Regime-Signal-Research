@@ -27,3 +27,11 @@ Task 7: Existing UI, localization and history tests passed (12 tests). Added bil
 
 Ruling: Preserve immutable versions instead of automatic destructive retention. Repository growth is documented; offloading must be selected before storage limits.
 Ruling: Record implementation milestones separately from external data/infrastructure gates. The whole project is not complete solely because tests pass.
+
+
+Final review: independent reviewer dispatched as required, but its turn failed at the account usage limit before producing findings. No independent approval is claimed. Author performed a separate self-review.
+Final fixed: settlement endpoint failure discarded valid current quotes; preserve quote/instrument snapshots and report settlement failure separately. Two regression tests observed RED then GREEN.
+Final fixed: dashboard on-chain path bypassed the scheduled archive; prefer recent validated collected data, then live API/official archive/bundle. Regression test observed RED then GREEN.
+Final fixed: on-chain educational cards displayed the market venue; now show their own source/observation metadata.
+Final verification: 54 tests passed, 188 existing/compatible deprecation warnings, no test failures. Actual-data research report regenerated with the final code fingerprint. Original running deployment verified in both English and Korean. New branch pushed successfully; preview deployment is available. Production update, collector activation and seven-day observation still to be verified.
+Deferred minor: large option history export currently needs dataset partitioning to fit upload limits; operational limit is documented and no automatic destructive retention is installed.
