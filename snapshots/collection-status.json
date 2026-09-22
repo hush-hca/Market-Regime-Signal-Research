@@ -1,31 +1,33 @@
 {
-  "as_of": "2026-09-22T15:16:45.363722+00:00",
+  "as_of": "2026-09-22T15:28:37.624639+00:00",
   "datasets": {
     "market_binance": {
-      "error": "HTTPError: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1d&startTime=1726963200000&endTime=1790035199999&limit=1000",
-      "status": "error"
+      "manifest": "market_binance/versions/5c35bde3be15e847d81b1d4e2f26c43f2369deb0d85af2a552e75a9faf888e94.json",
+      "missing_funding_rows": 21,
+      "rows": 730,
+      "stale": false,
+      "status": "ok"
     },
     "market_bybit": {
       "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1726963200000&end=1790035199999&limit=1000",
       "status": "error"
     },
     "onchain": {
-      "manifest": "onchain/versions/0df6e6816c06dae35c72204b79069820c4b2db60087c375afefd40e74c28ecdc.json",
       "rows": 1095,
-      "status": "ok"
+      "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/5315f6963bce319b8a70a49179eecb1511bbc0d8fa635aaa541990bd9cf06801.json",
+      "manifest": "option_instruments/versions/d3e5b1d57dc6b71f554f8da2b03516f79da9258846cfdab876935f07e10e6386.json",
       "rows": 970,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/6296e4b6851c5b5c2c763d43a49be138388cda04f977e14bfa366c4991c81369.json",
-      "rows": 458,
+      "manifest": "option_quotes/versions/302fb63e14374ebd4db000f40a3a2ff399714441edafe1ad60eef862afff182f.json",
+      "rows": 460,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/0b5a6720272183265ca18d55eb024388c6e50d79045fbd57944ec7a80977213a.json",
+      "manifest": "option_settlements/versions/50e2083226544b51c115f33f42a71b17a271d6184f7cd048b40bed48fe205528.json",
       "rows": 100,
       "status": "ok"
     }
