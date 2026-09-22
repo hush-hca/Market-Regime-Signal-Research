@@ -39,3 +39,7 @@ Upload the ZIP in the Options tab. Required files are quotes.csv, instruments.cs
 Run `python -m pytest -q`; run `python -m regime.report --output data/research-report`; verify the deployed source fingerprint matches `python -c "from regime.build import build_id; print(build_id())"`. Confirm health, WebSocket, English/Korean, real-data timestamps, fallback behavior and downloads on the actual authenticated deployment.
 
 Source: https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax
+
+
+### Official archive fallback
+When the Binance futures API fails, the collector reads checksum-verified USD-M ZIP archives from https://data.binance.vision/. It uses monthly prices plus daily prices for unpublished months, monthly funding, and the last published daily OI observation. No cross-venue splice is performed. Funding can lag by a month; missing funding and OI remain missing, so recent derivative regimes may be unclassified. Price freshness does not imply derivative freshness. See https://github.com/binance/binance-public-data for archive timing and checksum documentation.

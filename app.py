@@ -173,6 +173,12 @@ else:
 if include_chain and not any(c in d for c in ['mvrv','sopr','exchange_netflow']):
     st.error(t('Upload on-chain data before enabling its features.'))
     st.stop()
+if meta.get('transport')=='official public archive':
+    st.caption(t('Source: checksum-verified Binance public archives. Funding is published monthly and may lag prices.'))
+if pd.isna(d.funding.iloc[-1]):
+    st.warning(t('Latest funding is missing. Derivative regimes may be unclassified; no funding values are estimated.'))
+    funding_dates=d.loc[d.funding.notna(),'date']
+    st.caption(t('Last available funding date')+': '+(f'{funding_dates.max():%Y-%m-%d} UTC' if len(funding_dates) else t('Missing')))
 try:
     with st.spinner(t('Computing causal features and walk-forward regimes…')):
         f,r,profiles,manifest=analyze(d,include_oi,include_chain)

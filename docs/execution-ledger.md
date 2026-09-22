@@ -35,3 +35,7 @@ Final fixed: dashboard on-chain path bypassed the scheduled archive; prefer rece
 Final fixed: on-chain educational cards displayed the market venue; now show their own source/observation metadata.
 Final verification: 54 tests passed, 188 existing/compatible deprecation warnings, no test failures. Actual-data research report regenerated with the final code fingerprint. Original running deployment verified in both English and Korean. New branch pushed successfully; preview deployment is available. Production update, collector activation and seven-day observation still to be verified.
 Deferred minor: large option history export currently needs dataset partitioning to fit upload limits; operational limit is documented and no automatic destructive retention is installed.
+
+
+### Live collection verification and archive fallback
+Pushed implementation to main. First GitHub runner collection saved 1,095 on-chain rows, 458 option quotes, 970 instrument terms and 100 settlements. Bybit returned HTTP 403 and Binance HTTP 451. Added the distinct official Binance public archive source with SHA-256 checks, quote-volume normalization, complete funding-day checks and explicit missing unpublished derivatives. Nine targeted tests passed. Remote archive refresh still needs verification.

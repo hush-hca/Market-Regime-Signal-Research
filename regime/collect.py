@@ -5,6 +5,7 @@ from pathlib import Path
 import pandas as pd
 from .data import validate
 from .ingest import download
+from .binance_archive import download_archive
 from .onchain import load_coinmetrics
 from .options import load_quote_archive
 from .store import write_snapshot,read_latest,atomic_json
@@ -39,7 +40,13 @@ def collect_once(as_of,root):
         try:
             try: old,_=read_latest(root,dataset)
             except (OSError,ValueError): old=None
-            frame,meta=download(venue,60 if old is not None else 730,raw_dir=str(Path(root)/'raw'))
+            days=60 if old is not None else 730
+            try:
+                frame,meta=download(venue,days,raw_dir=str(Path(root)/'raw'))
+            except Exception as api_error:
+                if venue!='binance': raise
+                frame,meta=download_archive(days,as_of=now)
+                meta['api_error']=f'{type(api_error).__name__}: {api_error}'
             frame=merge_market(old,frame,now)
             publish(dataset,frame,{**meta,'observation_end':frame.date.max().isoformat(),
                 'vintage':'current; revisions retained as immutable snapshots'})

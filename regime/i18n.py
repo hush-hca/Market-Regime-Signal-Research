@@ -2,6 +2,9 @@
 import re
 
 KO = {
+    'Source: checksum-verified Binance public archives. Funding is published monthly and may lag prices.': '출처: 체크섬으로 검증한 Binance 공개 아카이브. 펀딩비는 월별로 게시되어 가격보다 늦을 수 있습니다.',
+    'Latest funding is missing. Derivative regimes may be unclassified; no funding values are estimated.': '최신 펀딩비가 없습니다. 파생상품 국면이 미분류로 표시될 수 있으며, 펀딩비를 추정하여 채우지 않습니다.',
+    'Last available funding date': '마지막 펀딩비 관측일',
     'Exchange data': '실제 거래소 데이터',
     'Refresh exchange data': '거래소 데이터 새로고침',
     'Bybit BTCUSDT · completed daily bars · cached for up to one hour.': 'Bybit BTCUSDT · 마감된 일봉 · 최대 1시간 캐시',

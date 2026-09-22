@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['.github/workflows/collect.yml']
+    paths: ['.github/workflows/collect.yml', 'regime/collect.py', 'regime/binance_archive.py']
   schedule:
     - cron: '17 * * * *'
 permissions:

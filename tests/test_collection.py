@@ -59,6 +59,7 @@ def test_collection_partial_failure_keeps_last_good(tmp_path,monkeypatch):
     assert report['datasets']['market_bybit']['status']=='ok'
     assert report['datasets']['onchain']['status']=='error'
     monkeypatch.setattr(collect,'download',offline)
+    monkeypatch.setattr(collect,'download_archive',offline)
     collect.collect_once('2026-09-24T00:00:00Z',str(tmp_path))
     assert len(read_latest(tmp_path,'market_bybit')[0])==730
 
@@ -78,6 +79,7 @@ def test_missing_settlements_are_reported_without_losing_quotes(tmp_path,monkeyp
     from regime.store import read_latest
     def offline(*args,**kwargs): raise ConnectionError('offline')
     monkeypatch.setattr(collect,'download',offline)
+    monkeypatch.setattr(collect,'download_archive',offline)
     monkeypatch.setattr(collect,'load_coinmetrics',offline)
     quotes=pd.DataFrame({'instrument':['BTC-call'],'observed_at':[pd.Timestamp('2026-09-22',tz='UTC')]})
     missing=pd.DataFrame(); missing.attrs['error']='settlement service offline'
