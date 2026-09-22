@@ -24,7 +24,7 @@
     "availability": "Assumed 48h lag, current-vintage, not point-in-time",
     "metrics": "CapMVRVCur,FlowInExUSD,FlowOutExUSD"
   },
-  "build_id": "f252fb0a4071",
+  "build_id": "3ba85798a8e8",
   "evaluation_status": "Exploratory; previously inspected holdout",
   "horizons": {
     "7": {
@@ -49,16 +49,16 @@
           "momentum_7",
           "momentum_30",
           "volatility_30",
-          "funding_7",
           "volume_z",
+          "funding_7",
           "oi_change_7"
         ],
         "Price + derivatives + on-chain": [
           "momentum_7",
           "momentum_30",
           "volatility_30",
-          "funding_7",
           "volume_z",
+          "funding_7",
           "oi_change_7",
           "mvrv",
           "exchange_netflow"
@@ -127,8 +127,8 @@
             "momentum_7",
             "momentum_30",
             "volatility_30",
-            "funding_7",
             "volume_z",
+            "funding_7",
             "oi_change_7"
           ],
           "fits": [
@@ -174,8 +174,8 @@
             "momentum_7",
             "momentum_30",
             "volatility_30",
-            "funding_7",
             "volume_z",
+            "funding_7",
             "oi_change_7",
             "mvrv",
             "exchange_netflow"
@@ -236,16 +236,16 @@
           "momentum_7",
           "momentum_30",
           "volatility_30",
-          "funding_7",
           "volume_z",
+          "funding_7",
           "oi_change_7"
         ],
         "Price + derivatives + on-chain": [
           "momentum_7",
           "momentum_30",
           "volatility_30",
-          "funding_7",
           "volume_z",
+          "funding_7",
           "oi_change_7",
           "mvrv",
           "exchange_netflow"
@@ -314,8 +314,8 @@
             "momentum_7",
             "momentum_30",
             "volatility_30",
-            "funding_7",
             "volume_z",
+            "funding_7",
             "oi_change_7"
           ],
           "fits": [
@@ -361,8 +361,8 @@
             "momentum_7",
             "momentum_30",
             "volatility_30",
-            "funding_7",
             "volume_z",
+            "funding_7",
             "oi_change_7",
             "mvrv",
             "exchange_netflow"
@@ -423,16 +423,16 @@
           "momentum_7",
           "momentum_30",
           "volatility_30",
-          "funding_7",
           "volume_z",
+          "funding_7",
           "oi_change_7"
         ],
         "Price + derivatives + on-chain": [
           "momentum_7",
           "momentum_30",
           "volatility_30",
-          "funding_7",
           "volume_z",
+          "funding_7",
           "oi_change_7",
           "mvrv",
           "exchange_netflow"
@@ -501,8 +501,8 @@
             "momentum_7",
             "momentum_30",
             "volatility_30",
-            "funding_7",
             "volume_z",
+            "funding_7",
             "oi_change_7"
           ],
           "fits": [
@@ -548,8 +548,8 @@
             "momentum_7",
             "momentum_30",
             "volatility_30",
-            "funding_7",
             "volume_z",
+            "funding_7",
             "oi_change_7",
             "mvrv",
             "exchange_netflow"

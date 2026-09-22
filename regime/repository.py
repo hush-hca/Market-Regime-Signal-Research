@@ -9,6 +9,14 @@ from .data import validate
 ROOT='https://raw.githubusercontent.com/hush-hca/Market-Regime-Signal-Research/research-data/snapshots'
 
 
+def read_collection_status(client=None):
+    response=(client or session()).get(ROOT+'/collection-status.json',timeout=(3,8))
+    response.raise_for_status()
+    value=response.json()
+    if not isinstance(value.get('datasets'),dict): raise ValueError('Invalid collection status')
+    return value
+
+
 def read_repository_snapshot(dataset,client=None):
     if not re.fullmatch('[a-z][a-z0-9_]{0,63}',dataset):
         raise ValueError('Invalid dataset name.')

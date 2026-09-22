@@ -8,7 +8,6 @@ from .data import enrich
 from .feed import read_snapshot,BUNDLED_SNAPSHOT
 from .onchain import BUNDLE
 from .evaluation import evaluate_feature_sets
-from .research import features,walk_forward,strategy
 from .build import build_id
 
 
@@ -30,14 +29,6 @@ def generate_report(output):
         ledger.to_csv(output/f'events-{horizon}d.csv',index=False)
     pd.concat(summaries,ignore_index=True).to_csv(output/'summary.csv',index=False)
     pd.concat(coverage,ignore_index=True).to_csv(output/'coverage.csv',index=False)
-    regimes,_,_=walk_forward(daily,features(daily))
-    costs=[]
-    for total in [0,10,25,50]:
-        ledger,metrics=strategy(daily,regimes,fee_bps=total/2,slippage_bps=total/2,instrument='perpetual')
-        metrics=metrics.assign(one_way_cost_bps=total)
-        metrics['turnover']=[float(ledger.turnover.sum()+ledger.position.iloc[-1]),2.]
-        costs.append(metrics)
-    pd.concat(costs,ignore_index=True).to_csv(output/'cost-sensitivity.csv',index=False)
     (output/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     return manifest
 

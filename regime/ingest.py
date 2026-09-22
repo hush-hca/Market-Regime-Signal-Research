@@ -152,6 +152,7 @@ def main():
     out = Path(args.output)
     out.parent.mkdir(parents=True,exist_ok=True)
     d.to_parquet(out,index=False)
+    meta['sha256']=hashlib.sha256(out.read_bytes()).hexdigest()
     out.with_suffix('.json').write_text(json.dumps(meta,indent=2),encoding='utf-8')
     print(f'Saved {len(d)} daily rows to {out}; {meta["oi_note"]}')
 

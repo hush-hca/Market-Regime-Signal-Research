@@ -1,6 +1,6 @@
 """Prespecified context hypotheses; descriptive conditions, not capital-flow claims."""
 import pandas as pd
-from .research import features
+from .readiness import MODELS,model_features
 
 
 def context_signals(daily):
@@ -16,9 +16,7 @@ def context_signals(daily):
 
 
 def feature_sets(daily):
-    base=features(daily)
-    result={'Price only':base.drop(columns='funding_7'),
-            'Price + derivatives':features(daily,include_oi=True)}
+    result={name:model_features(daily,name) for name in MODELS[:2]}
     if all(name in daily and daily[name].notna().any() for name in ['mvrv','exchange_netflow']):
-        result['Price + derivatives + on-chain']=features(daily,include_oi=True,include_onchain=True)
+        result[MODELS[2]]=model_features(daily,MODELS[2])
     return result

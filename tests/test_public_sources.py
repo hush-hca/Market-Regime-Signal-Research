@@ -85,7 +85,7 @@ def test_dashboard_with_real_onchain_bundle(tmp_path,monkeypatch):
     st.cache_data.clear()
     app=AppTest.from_file(str(Path(__file__).parents[1]/'app.py'),default_timeout=60).run()
     assert not app.exception and len(app.metric)==6
-    app.checkbox(key='Include uploaded on-chain features').check().run()
+    app.selectbox(key='Model::en').select('Price + derivatives + on-chain').run()
     assert not app.exception and len(app.tabs)==5 and not app.error
 
 

@@ -9,6 +9,7 @@ from .binance_archive import download_archive
 from .onchain import load_coinmetrics
 from .options import load_quote_archive
 from .store import write_snapshot,read_latest,atomic_json
+from .forward import collect_forward
 
 
 def merge_market(old,new,as_of):
@@ -80,6 +81,12 @@ def collect_once(as_of,root):
                 report['datasets'][dataset]={'status':'error','error':f'{type(exc).__name__}: {exc}'}
     except Exception as exc:
         report['datasets']['options']={'status':'error','error':f'{type(exc).__name__}: {exc}'}
+    try:
+        # Capture the actual completion time, never the collector start time.
+        forward=collect_forward(root,pd.Timestamp.now(tz='UTC').isoformat())
+        report['datasets']['forward']={'status':'ok',**forward}
+    except Exception as exc:
+        report['datasets']['forward']={'status':'error','error':f'{type(exc).__name__}: {exc}'}
     atomic_json(Path(root)/'collection-status.json',report)
     return report
 

@@ -56,7 +56,8 @@ def walk_forward(d, f, config=Config()):
         (f.momentum_30>0)&(funding_7<=0)],
         ['Positive trend / positive funding','Negative trend / negative funding','Positive trend / negative funding'],
         default='Mixed trend / funding')
-    result.loc[valid,'rule'] = rules[valid]
+    rule_valid=valid & funding_7.notna()
+    result.loc[rule_valid,'rule'] = rules[rule_valid]
     starts = sorted(set(list(range(config.train_days,cutoff,config.refit_days))+[cutoff]))
     profiles, fits = [], []
     for step, start in enumerate(starts):

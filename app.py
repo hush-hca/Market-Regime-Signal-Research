@@ -4,23 +4,21 @@ import io
 import json
 from pathlib import Path
 import zipfile
-import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from regime.data import validate, enrich, quality
+from regime.data import enrich, quality
 from regime.ingest import download
-from regime.feed import load_market
+from regime.feed import load_market, read_snapshot
 from regime.onchain import load_onchain
-from regime.options import load_quotes, select_call, inverse_call_payoff
+from regime.options import load_quotes, select_call
 from regime.signals import context_signals
 from regime.evaluation import evaluate_feature_sets
-from regime.options_backtest import covered_call_events
-from regime.history import read_history_zip
-from regime.vintages import enrich_vintages
 from regime.build import build_id
-from regime.research import Config, features, walk_forward, events, summarize, strategy, payoff
+from regime.research import events, summarize
+from regime.readiness import MODELS,model_features,model_states
+from regime.panels import health_panel,evidence_panel,forward_panel,collection_status,forward_data
 from regime.i18n import translate, error_text, display_frame, translate_figure
 
 BUILD_ID=build_id()
@@ -75,10 +73,8 @@ def option_quotes():
     return load_quotes()
 
 @st.cache_data(show_spinner=False)
-def analyze(d, oi, chain):
-    f=features(d,oi,chain)
-    r,p,m=walk_forward(d,f)
-    return f,r,p,m
+def analyze_models(d):
+    return model_states(d)
 
 def plot(fig,height=380):
     translate_figure(fig,language)
@@ -94,13 +90,17 @@ with st.sidebar:
     st.markdown('### ◈ REGIME ATLAS')
     st.caption(t('BTC / DAILY RESEARCH WORKSPACE'))
     st.caption(t('Build')+': '+BUILD_ID)
-    source=choice(st,'Data source',['Exchange data','Local snapshot','Upload CSV','Fetch public API'])
+    source=choice(st,'Data source',['Exchange data','Local snapshot','Fetch public API'])
     d=None
     meta={}
+    chain=None
     try:
         if source=='Exchange data':
             if st.button(t('Refresh exchange data'),key='refresh_exchange'):
                 exchange_data.clear()
+                onchain_data.clear()
+                collection_status.clear()
+                forward_data.clear()
             st.caption(t('Bybit → Binance → verified snapshot · completed daily bars · one-hour cache.'))
             with st.spinner(t('Fetching price, funding and available OI…')):
                 d,meta,notice=exchange_data()
@@ -109,15 +109,9 @@ with st.sidebar:
         elif source=='Local snapshot':
             path=Path('data/market.parquet')
             if path.exists():
-                d=validate(pd.read_parquet(path))
-                meta=json.loads(path.with_suffix('.json').read_text()) if path.with_suffix('.json').exists() else {'source':'local','synthetic':False,'price_instrument':'user-supplied, unverified'}
+                d,meta=read_snapshot(path,require_digest=True)
             else:
                 st.info(t('Create a snapshot with the ingestion command in the README.'))
-        elif source=='Upload CSV':
-            uploaded=st.file_uploader(t('Daily market CSV'),type=['csv'], key='Daily market CSV')
-            if uploaded:
-                d=validate(pd.read_csv(uploaded))
-                meta={'source':'uploaded','synthetic':False,'price_instrument':'user-supplied, unverified'}
         else:
             venue=choice(st,'Venue',['binance','bybit'])
             days=choice(st,'History requested (days)',[730,1095,1460])
@@ -126,18 +120,8 @@ with st.sidebar:
                     st.session_state['downloaded']=download(venue,days)
             if 'downloaded' in st.session_state:
                 d,meta=st.session_state['downloaded']
-        chain_source=choice(st,'On-chain source',['Coin Metrics (noncommercial)','CSV only / off'])
-        chain_csv=st.file_uploader(t('Optional on-chain CSV'),type=['csv'],help=t('Requires available_at and mvrv, sopr or exchange_netflow. Only use data you are licensed to process.'), key='Optional on-chain CSV')
-        if d is not None and chain_csv:
-            text=chain_csv.getvalue().decode('utf-8-sig')
-            uploaded_chain=pd.read_csv(io.StringIO(text))
-            if {'observation_time','retrieved_at'}<=set(uploaded_chain):
-                d=enrich_vintages(d,uploaded_chain)
-                meta['onchain']='user-uploaded as-recorded vintages; availability and retrieval timestamps supplied by user'
-            else:
-                d=enrich(d,text)
-                meta['onchain']='user upload; availability timestamps supplied by user; vintage not verified'
-        elif d is not None and chain_source=='Coin Metrics (noncommercial)':
+        chain_source=choice(st,'On-chain source',['Coin Metrics (noncommercial)','Off'])
+        if d is not None and chain_source=='Coin Metrics (noncommercial)':
             try:
                 chain,chain_meta=onchain_data(d.date.min(),d.date.max())
                 d=enrich(d,chain.to_csv(index=False))
@@ -152,8 +136,7 @@ with st.sidebar:
     except Exception as exc:
         show_error(exc)
         d=None
-    include_oi=st.checkbox(t('Include OI features'),value=False,help=t('Requires at least 180 complete training rows. Recent-only Binance OI is insufficient.'), key='Include OI features')
-    include_chain=st.checkbox(t('Include on-chain features (exploratory)'),value=False, key='Include uploaded on-chain features')
+    selected_model=choice(st,'Model',MODELS)
     st.divider()
     audience=choice(st,'Presentation focus',['Research team','Exchange','Options team'])
     st.caption(t('Fixed model: four clusters · 365-day warm-up · 90-day refits · final 180-day frozen holdout.'))
@@ -162,29 +145,28 @@ st.markdown('<div class="eyebrow">'+t('MARKET INTELLIGENCE / RESEARCH MVP')+'</d
 st.title(t('Understand the regime. Inspect the evidence.'))
 st.caption(t('Price, positioning and on-chain context — with transparent historical outcomes.'))
 if d is None:
-    st.info(t('Load a real market snapshot, upload your dataset, or fetch a public API in the sidebar.'))
+    st.info(t('Load a verified real market snapshot or fetch a public API in the sidebar.'))
     st.stop()
 if meta.get('synthetic'):
-    st.warning(t('SYNTHETIC DEMO — generated prices and indicators. All results demonstrate software behavior; they are not market evidence.'))
+    st.error(t('Synthetic data is not allowed.'))
+    st.stop()
 else:
     st.info(t(t('Dataset: {source} · {instrument} · as of {date} UTC. Historical API data may contain later revisions.').format(source=t(meta.get('source')),instrument=t(meta.get('price_instrument')),date=f'{d.date.max():%Y-%m-%d}')))
     if d.date.max()<pd.Timestamp.now(tz='UTC').normalize()-pd.Timedelta(days=2):
         st.warning(t('Historical snapshot: the last observation is more than two days old. Latest regime below is not a live signal.'))
-if include_chain and not any(c in d for c in ['mvrv','sopr','exchange_netflow']):
-    st.error(t('Upload on-chain data before enabling its features.'))
-    st.stop()
 if meta.get('transport')=='official public archive':
     st.caption(t('Source: checksum-verified Binance public archives. Funding is published monthly and may lag prices.'))
 if pd.isna(d.funding.iloc[-1]):
     st.warning(t('Latest funding is missing. Derivative regimes may be unclassified; no funding values are estimated.'))
     funding_dates=d.loc[d.funding.notna(),'date']
     st.caption(t('Last available funding date')+': '+(f'{funding_dates.max():%Y-%m-%d} UTC' if len(funding_dates) else t('Missing')))
-try:
-    with st.spinner(t('Computing causal features and walk-forward regimes…')):
-        f,r,profiles,manifest=analyze(d,include_oi,include_chain)
-except ValueError as exc:
-    show_error(exc)
+states,fits=analyze_models(d)
+health_panel(d,meta,chain,states,t,language)
+if selected_model not in fits:
+    st.warning(t('Selected model is unavailable. Choose an available model explicitly; inputs are never substituted.'))
     st.stop()
+f=model_features(d,selected_model)
+r,profiles,manifest=fits[selected_model]
 manifest.update(build_id=BUILD_ID,evaluation_status='Exploratory; previously inspected holdout',source=meta,dataset_sha256=hashlib.sha256(d.to_csv(index=False).encode()).hexdigest(),
     generated_at=pd.Timestamp.now(tz='UTC').isoformat())
 latest=r.iloc[-1]
@@ -194,9 +176,10 @@ b.metric(t('Last close'),f'${d.close.iloc[-1]:,.0f}',f'{d.close.pct_change().ilo
 c.metric(t('30-day momentum'),f'{f.momentum_30.iloc[-1]:+.1%}')
 e.metric(t('Last daily funding'),f'{d.funding.iloc[-1]:.4%}' if pd.notna(d.funding.iloc[-1]) else t('Missing'))
 st.caption(t(t('{count} daily observations · {start} → {end} · Source: {source}').format(count=f'{len(d):,}',start=f'{d.date.min():%Y-%m-%d}',end=f'{d.date.max():%Y-%m-%d}',source=t(meta['source']))))
-tabs=st.tabs([t(name) for name in ['Overview','Historical outcomes','Strategy lab','Options payoff','Data & methodology']])
+tabs=st.tabs([t(name) for name in ['Overview','Historical outcomes','Forward ledger','Options data','Data & methodology']])
 
 with tabs[0]:
+    evidence_panel(d,r,t,language)
     context=context_signals(d)
     with st.expander(t('Negative funding + low MVRV hypothesis')):
         st.write(t('Daily funding flips below zero and MVRV falls below its prior 365-observation 20th percentile, with at least 180 prior observations. This describes context; it does not establish capital inflow.'))
@@ -297,75 +280,20 @@ with tabs[1]:
             show_error(exc,warning=True)
 
 with tabs[2]:
-    st.subheader(t('A predefined rule, an explicit ledger'))
-    st.write(t('Long when the prior completed day has positive 30-day momentum and an available model classification; otherwise cash. Full allocation, no leverage. The strategy uses indicator rules, not a hindsight selection of profitable clusters.'))
-    x,y,z=st.columns(3)
-    fees=x.number_input(t('One-way fees (bps)'),min_value=0.,value=5.,step=1., key='One-way fees (bps)')
-    slip=y.number_input(t('One-way slippage (bps)'),min_value=0.,value=5.,step=1., key='One-way slippage (bps)')
-    mode=choice(z,'Accounting',['Spot-like price proxy','Perpetual with daily funding'])
-    st.caption(t('Public adapters use perpetual candles. Spot-like mode is a price-only proxy, not an executable spot backtest. Perpetual funding uses daily summed rates on opening notional; intraday mark-notional changes are approximated.'))
-    try:
-        ledger,metrics=strategy(d,r,fees,slip,partition,'perpetual' if mode.startswith('Perpetual') else 'spot_proxy')
-        if not ledger.empty:
-            percent_table(metrics)
-            plot(px.line(ledger,x='date',y=['equity','benchmark'],color_discrete_sequence=['#42d6ad','#719cff'],labels={'value':'Growth of 1 unit','variable':'Strategy'}))
-            st.caption(t(t('Evaluation: {partition}. Includes entry, position changes and final liquidation costs. Cash earns zero; no taxes, borrow costs or liquidation model.').format(partition=t(partition))))
-            st.download_button(t('Download trading ledger'),ledger.to_csv(index=False),'strategy-ledger.csv','text/csv', key='Download trading ledger')
-    except ValueError as exc:
-        show_error(exc,warning=True)
-        ledger=pd.DataFrame()
+    ledger=forward_panel(t,language)
 
 with tabs[3]:
-    with st.expander(t('Historical covered-call research')):
-        st.caption(t('Upload an archived quote bundle to calculate expiry-accounting returns. Current quotes are never substituted for historical premiums. User-supplied provenance requires review.'))
-        history_file=st.file_uploader(t('Historical option bundle (ZIP)'),type=['zip'],key='option_history')
-        spot_fee=st.number_input(t('Assumed spot entry fee (bps)'),min_value=0.,value=5.,key='historical_spot_fee')
-        option_fee=st.number_input(t('Assumed option entry fee (BTC)'),min_value=0.,value=.0003,format='%.6f',key='historical_option_fee')
-        settlement_fee=st.number_input(t('Assumed settlement fee (BTC)'),min_value=0.,value=.00015,format='%.6f',key='historical_settlement_fee')
-        st.caption(t('One BTC covered call; bid-price assumption; no guaranteed fill or margin-path simulation. Remaining BTC is marked at expiry, with no spot exit fee. Fee inputs are assumptions, not verified historical fees.'))
-        if history_file is not None:
-            try:
-                history=read_history_zip(history_file.getvalue())
-                option_events=covered_call_events(r.loc[r.partition.eq(partition),['date','regime']],
-                    history['spot'],history['quotes'],history['instruments'],history['settlements'],
-                    dict(spot_bps=spot_fee,option_fee_btc=option_fee,settlement_fee_btc=settlement_fee))
-                st.dataframe(display_frame(option_events,language),hide_index=True)
-                completed=option_events[option_events.status.eq('completed')]
-                if completed.empty:
-                    st.info(t('No completed historical option trades with valid quotes and settlements.'))
-                else:
-                    grouped=completed.groupby('regime').agg(n=('covered_call_return','size'),mean=('covered_call_return','mean'),spot_mean=('spot_return','mean'))
-                    st.dataframe(display_frame(grouped,language))
-                    st.warning(t('Small regime samples remain exploratory. These are expiry-accounting results, not an executable margin backtest.'))
-                st.download_button(t('Download historical option ledger'),option_events.to_csv(index=False),'historical-options.csv','text/csv')
-            except (ValueError,KeyError,zipfile.BadZipFile) as exc:
-                show_error(exc,warning=True)
     st.subheader(t('Deribit public BTC call quotes'))
-    st.caption(t('Current quotes only; no historical option returns. Target: 30 days ± 14, nearest 110% strike among OTM calls.'))
+    st.caption(t('Actual observed quotes only. Assumed-premium scenarios and unverified net option returns are not displayed.'))
     if st.button(t('Fetch current option quote'),key='fetch_options'):
         try:
             quotes=option_quotes()
             selected=select_call(quotes)
             st.dataframe(selected.to_frame('value').astype(str),width='stretch')
-            quoted_payoff=inverse_call_payoff(selected.spot_index,selected.strike,selected.bid_btc)
-            plot(px.line(quoted_payoff,x='terminal_price',y=['spot_return','covered_call_return']))
-            st.caption(t('Inverse BTC settlement; premium retained in BTC. Gross expiry scenario using bid, zero fees. Execution and collateral effects are not modeled.'))
-            quotes['regime']=latest.regime
-            quotes['regime_date']=str(d.date.max())
+            st.caption(t('A quoted bid is not proof of an executable fill. Historical option returns require recorded quotes, settlements and verified costs.'))
             st.download_button(t('Download timestamped option quotes'),quotes.to_csv(index=False),'deribit-quotes.csv','text/csv')
         except Exception as exc:
             show_error(exc,warning=True)
-    st.divider()
-    st.subheader(t('Covered-call payoff explorer'))
-    st.info(t('SCENARIO SIMULATION — premiums are assumptions. This is not a historical options backtest, a quoted product, or a regime-specific return estimate.'))
-    a,b,c=st.columns(3)
-    strike=a.slider(t('Strike (% of entry spot)'),80,150,110, key='Strike (% of entry spot)')
-    premium=b.slider(t('Assumed premium (% of entry spot)'),0.,20.,3.,.25, key='Assumed premium (% of entry spot)')
-    cost=c.slider(t('Total assumed costs (% of entry spot)'),0.,3.,.2,.1, key='Total assumed costs (% of entry spot)')
-    pay=payoff(100,strike,premium,cost)
-    plot(px.line(pay,x='terminal_price',y=['spot_return','covered_call_return'],color_discrete_sequence=['#719cff','#42d6ad'],labels={'terminal_price':'Terminal spot (entry = 100)','value':'Return on initial spot capital'}))
-    st.write(t(t('Maximum covered-call return: {maximum}. Loss if the underlying goes to zero: {loss}. Premium cushions losses and caps gains; it does not remove downside risk.').format(maximum=f'{(strike-100+premium-cost)/100:.1%}',loss=f'{(-100+premium-cost)/100:.1%}')))
-    st.caption(t('One unit of owned spot + one same-unit short call, held to expiry. Linear USD cash settlement; no interim mark-to-market or collateral mechanics. Regime-to-options mappings remain hypotheses until quote history is available.'))
 
 with tabs[4]:
     st.subheader(t('Data quality & reproducibility'))
@@ -378,15 +306,15 @@ with tabs[4]:
 - Standardization and clustering fit only on past complete observations.
 - Expanding refits stop at the final 180-day holdout; its model stays frozen.
 - No future-return labels enter clustering, so fitting does not require forward-label purging. Event windows cannot cross evaluation boundaries.
-- Optional on-chain imports join by `available_at`, with a two-day staleness limit. The uploader must supply honest historical publication timestamps.
+- On-chain observations join by an explicit 48-hour availability policy, with a two-day alignment tolerance. Historical first-publication timing is not independently verified.
 - Cluster names describe relative training momentum, not validated economic states. Distances are not probabilities.
 - No automatic parameter search. Changing features after viewing holdout results invalidates an untouched-test interpretation.
 '''))
     focus={'Research team':'Lead with sample sizes, out-of-sample distributions, data lineage and negative findings.',
         'Exchange':'Lead with derivatives coverage, funding conventions, data freshness and indicator education.',
-        'Options team':'Lead with payoff assumptions, capped upside, full downside exposure and the missing historical quote requirement.'}
+        'Options team':'Lead with observed quotes, settlement conventions and historical coverage gaps.'}
     st.success(t(f'{t(audience)}: {t(focus[audience])}'))
-    manifest['evaluation']={'horizon':horizon,'partition':partition,'taxonomy':taxonomy,'fee_bps':fees,'slippage_bps':slip,'accounting':mode}
+    manifest['evaluation']={'horizon':horizon,'partition':partition,'taxonomy':taxonomy,'accounting':'Observed gross asset returns; costs excluded'}
     payload=io.BytesIO()
     with zipfile.ZipFile(payload,'w',zipfile.ZIP_DEFLATED) as archive:
         archive.writestr('manifest.json',json.dumps(manifest,indent=2))
@@ -394,6 +322,6 @@ with tabs[4]:
         archive.writestr('profiles.csv',profiles.to_csv(index=False))
         archive.writestr('events.csv',ev.to_csv(index=False))
         archive.writestr('summary.csv',summary.to_csv(index=False))
-        archive.writestr('strategy.csv',ledger.to_csv(index=False))
+        archive.writestr('forward-ledger.csv',ledger.to_csv(index=False))
     st.download_button(t('Export reproducible research results'),payload.getvalue(),'regime-research.zip','application/zip', key='Export reproducible research results')
     with st.expander(t('Model fit manifest')): st.json(manifest)

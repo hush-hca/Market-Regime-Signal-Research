@@ -257,3 +257,47 @@ KO.update({
 })
 
 KO.update({'On-chain hypothesis':'온체인 가설','Other observed context':'기타 관측된 조건','Negative funding / low MVRV':'음수 펀딩비 / 낮은 MVRV'})
+
+KO.update({
+'Model':'모델', 'Data health and model readiness':'데이터 상태 및 모델 준비 상태',
+'Observation dates and usable market dates are different. Older than three calendar days is flagged stale; this is an operational policy.':'원래 관측일과 모델에 사용 가능한 시장 날짜는 다릅니다. 관측 후 3일이 넘으면 오래된 데이터로 표시하는 운영 기준을 사용합니다.',
+'Price only uses observed price and volume. Derivatives adds funding and OI. On-chain adds MVRV and net flows; SOPR is not included. No automatic model substitution.':'가격 모델은 실제 가격·거래량을 사용합니다. 파생상품 모델은 펀딩비·OI를, 온체인 모델은 MVRV·순유입을 추가합니다. SOPR은 포함하지 않으며 모델을 자동 대체하지 않습니다.',
+'Collector status and failures':'수집 상태 및 오류', 'Collection started at':'수집 시작 시각',
+'Collection status unavailable. This does not establish that collection succeeded.':'수집 상태를 확인할 수 없습니다. 수집 성공을 의미하지 않습니다.',
+'Selected model is unavailable. Choose an available model explicitly; inputs are never substituted.':'선택한 모델을 사용할 수 없습니다. 사용 가능한 모델을 직접 선택하세요. 입력값을 대체하지 않습니다.',
+'Synthetic data is not allowed.':'가상 데이터는 허용하지 않습니다.',
+'Evidence by regime':'국면별 근거', 'Evidence horizon (days)':'근거 평가 기간(일)',
+'Exploratory gross asset outcomes, not forecasts or net trading returns. Baseline: all eligible sampled dates. The mean difference is descriptive, not a paired strategy edge.':'탐색적 자산 총수익률이며 예측이나 비용 차감 거래 수익률이 아닙니다. 기준은 동일한 적격 표본 날짜 전체입니다. 평균 차이는 기술 통계이며 전략의 초과 성과를 입증하지 않습니다.',
+'completed events':'완료 이벤트', 'Evaluation period':'평가 구간', 'Sampled episodes':'표본 국면 발생 횟수',
+'Positive frequency':'양수 수익 빈도', 'Mean / median return':'평균 / 중앙값 수익률',
+'Baseline mean / descriptive difference':'기준 평균 / 기술적 차이',
+'Mean uncertainty interval unavailable: fewer than five events.':'이벤트가 5개 미만이어서 평균의 불확실성 구간을 표시하지 않습니다.',
+'Approximate 95% bootstrap interval for the mean':'평균의 근사 95% 부트스트랩 구간',
+'Limited sample; no demonstrated predictive edge.':'표본 부족: 예측 우위가 입증되지 않았습니다.',
+'Descriptive evidence; no demonstrated predictive edge.':'기술적 근거: 예측 우위가 입증되지 않았습니다.',
+'Download regime evidence':'국면별 근거 다운로드', 'Forward ledger':'전진 관측 원장', 'Options data':'옵션 관측 데이터',
+'Frozen forward paper ledger':'고정 모델 전진 모의 관측 원장',
+'Only observations recorded after model registration appear here. Frozen models never refit. Entry is scheduled for the first UTC open after recording; outcomes wait for actual later bars.':'모델 등록 후 기록된 관측만 표시합니다. 모델을 재학습하지 않습니다. 기록 이후 첫 UTC 시가를 진입 기준으로 예약하며 결과는 실제 후속 봉이 수집될 때까지 대기합니다.',
+'Paper research, not executed trades. Returns are gross perpetual-candle price changes; funding, fees, slippage and interest are excluded. Overlapping horizons are not independent samples.':'실제 체결이 아닌 모의 연구입니다. 수익률은 무기한 선물 봉의 가격 변동이며 펀딩비·수수료·슬리피지·이자는 제외합니다. 겹치는 평가 기간은 독립 표본이 아닙니다.',
+'Refresh forward ledger':'전진 원장 새로고침',
+'No verified forward ledger is available yet. No example predictions or returns are shown.':'검증된 전진 원장이 아직 없습니다. 예시 예측이나 수익률을 표시하지 않습니다.',
+'Recorded models':'등록된 모델', 'Completed outcomes':'완료된 결과',
+'Paper rule: long when observed 30-day momentum is positive and inputs are complete; otherwise abstain. This rule is fixed at registration and has no proven edge.':'모의 규칙: 관측된 30일 모멘텀이 양수이고 입력이 완전하면 매수, 그 외에는 관망합니다. 등록 시 고정되는 규칙이며 우위가 입증되지 않았습니다.',
+'Outcomes are pending. No forward performance exists yet.':'결과 대기 중입니다. 전진 성과는 아직 없습니다.',
+'Frozen model artifacts':'고정 모델 명세', 'Download forward ledger':'전진 원장 다운로드', 'Download frozen models':'고정 모델 다운로드',
+'Actual observed quotes only. Assumed-premium scenarios and unverified net option returns are not displayed.':'실제로 관측된 호가만 표시합니다. 가정한 프리미엄 시나리오나 검증되지 않은 옵션 순수익률을 표시하지 않습니다.',
+'A quoted bid is not proof of an executable fill. Historical option returns require recorded quotes, settlements and verified costs.':'매수호가가 실제 체결 가능성을 보장하지 않습니다. 과거 옵션 수익률에는 기록된 호가·결제값·검증된 비용이 필요합니다.',
+'model':'모델', 'latest_ready':'최신 입력 준비', 'last_classified_date':'마지막 분류일', 'missing_features':'누락된 특성',
+'complete_training_candidates':'완전한 학습 후보 행', 'feature_columns':'특성 목록', 'reason':'사유',
+'Ready':'준비됨','Unavailable':'사용 불가','Missing latest inputs':'최신 입력 누락','Available':'사용 가능','Stale':'오래됨',
+'metric':'지표','observation_date':'원래 관측일','usable_market_date':'사용 가능한 시장 날짜','age_days':'경과 일수',
+'missing_rows':'누락 행','total_rows':'전체 행','provider':'제공자','retrieved_at':'수집 시각','dataset':'데이터셋',
+'model_id':'모델 ID','signal_date':'신호 기준일','recorded_at':'기록 시각','source_snapshot':'원본 스냅샷',
+'onchain_snapshot':'온체인 스냅샷','horizon_days':'평가 일수','paper_action':'모의 행동',
+'entry_date':'진입 기준일','exit_date':'종료 기준일','entry_price':'진입 관측 가격','exit_price':'종료 관측 가격',
+'asset_gross_return':'자산 가격 총수익률','paper_gross_return':'모의 가격 총수익률','entry_snapshot':'진입 스냅샷',
+'outcome_snapshot':'결과 스냅샷','resolved_at':'결과 기록 시각', 'awaiting_entry':'진입 관측 대기', 'awaiting_exit':'종료 관측 대기',
+'missing_inputs':'입력 누락','Long':'매수','Abstain':'관망','model_version':'모델 버전'
+})
+
+KO.update({"Off":"끄기", "Load a verified real market snapshot or fetch a public API in the sidebar.":"검증된 실제 시장 스냅샷을 불러오거나 사이드바에서 공개 API를 조회하세요.", "Lead with observed quotes, settlement conventions and historical coverage gaps.":"실제 호가, 결제 방식 및 과거 데이터 누락 범위를 중심으로 설명합니다."})
