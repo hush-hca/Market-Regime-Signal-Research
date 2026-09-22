@@ -2,10 +2,13 @@
 import json
 import hashlib
 import logging
+import os
 from pathlib import Path
 import pandas as pd
 from .data import validate
 from .ingest import download
+from .store import read_latest
+from .repository import read_repository_snapshot
 
 BUNDLED_SNAPSHOT=Path(__file__).resolve().parents[1]/'bootstrap'/'bybit.parquet'
 
@@ -24,6 +27,16 @@ def read_snapshot(path, require_digest=False):
 def load_market(snapshot='data/market.parquet', bundled_snapshot=BUNDLED_SNAPSHOT):
     last_error=None
     diagnostics=[]
+    stored=[]
+    for venue in ['bybit','binance']:
+        try:
+            root=os.environ.get('REGIME_SNAPSHOT_ROOT')
+            frame,meta=(read_latest(root,'market_'+venue) if root else read_repository_snapshot('market_'+venue))
+            if frame.date.max()>=pd.Timestamp.now(tz='UTC').normalize()-pd.Timedelta(days=2):
+                return frame,meta,None
+            stored.append((frame,meta))
+        except (OSError,ValueError,KeyError) as exc:
+            diagnostics.append(f'Stored {venue}: {type(exc).__name__}: {exc}')
     for venue in ['bybit','binance']:
         try:
             frame,meta=download(venue,730)
@@ -32,6 +45,9 @@ def load_market(snapshot='data/market.parquet', bundled_snapshot=BUNDLED_SNAPSHO
             last_error=exc
             diagnostics.append(f'{venue}: {type(exc).__name__}: {exc}')
             logging.getLogger(__name__).warning('%s refresh failed: %s: %s',venue,type(exc).__name__,exc)
+    if stored:
+        frame,meta=max(stored,key=lambda item:item[0].date.max())
+        return frame,meta,'Refresh failed. Showing the saved real exchange snapshot; check its date.'
     for candidate,require_digest in [(snapshot,False),(bundled_snapshot,True)]:
         if candidate is None:
             continue

@@ -48,6 +48,29 @@ def load_quotes(client=None):
         raise ValueError('No active BTC calls with a valid bid and ask.')
     return quotes
 
+
+def load_quote_archive(client=None):
+    """Collect quotes, original instrument terms and recent official settlements."""
+    client=client or session()
+    instruments=get_json(client,BASE+'get_instruments',currency='BTC',kind='option',expired='false')['result']
+    summaries=get_json(client,BASE+'get_book_summary_by_currency',currency='BTC',kind='option')['result']
+    spot=get_json(client,BASE+'get_index_price',index_name='btc_usd')['result']['index_price']
+    now=pd.Timestamp.now(tz='UTC')
+    quotes=normalize_quotes(instruments,summaries,spot,now)
+    if quotes.empty:
+        raise ValueError('No valid current option quotes to archive.')
+    terms=pd.DataFrame(instruments)
+    terms['observed_at']=now
+    terms['expiry']=pd.to_datetime(terms.expiration_timestamp,unit='ms',utc=True)
+    terms=terms.rename(columns={'instrument_name':'instrument'})
+    deliveries=get_json(client,BASE+'get_delivery_prices',index_name='btc_usd',count=100)['result']['data']
+    settlements=pd.DataFrame(deliveries)
+    if not settlements.empty:
+        settlements['expiry']=pd.to_datetime(settlements.date,utc=True)+pd.Timedelta(hours=8)
+        settlements['index_name']='btc_usd'
+        settlements['observed_at']=now
+    return {'option_quotes':quotes,'option_instruments':terms,'option_settlements':settlements}
+
 def select_call(quotes,tenor=30,target_moneyness=1.10):
     """Predefined nearest expiry, then nearest OTM strike; no performance fitting."""
     eligible=quotes[quotes.days_to_expiry.between(tenor-14,tenor+14)&(quotes.moneyness>=1)].copy()
