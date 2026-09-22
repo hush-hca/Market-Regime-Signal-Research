@@ -2,6 +2,13 @@
 import re
 
 KO = {
+    'Exchange data': '실제 거래소 데이터',
+    'Refresh exchange data': '거래소 데이터 새로고침',
+    'Bybit BTCUSDT · completed daily bars · cached for up to one hour.': 'Bybit BTCUSDT · 마감된 일봉 · 최대 1시간 캐시',
+    'Refresh failed. Showing the saved real exchange snapshot; check its date.': '최신 조회에 실패하여 저장된 실제 거래소 데이터를 표시합니다. 기준일을 확인하세요.',
+    'Exchange data unavailable and no verified real snapshot exists.': '거래소 데이터를 가져올 수 없고 확인된 실제 저장 데이터도 없습니다. 공개 API 조회를 다시 시도하거나 CSV를 업로드하세요.',
+    'Fallback snapshot is not verified exchange data.': '대체 파일이 출처가 확인된 실제 거래소 데이터가 아닙니다.',
+    'Load a real market snapshot, upload your dataset, or fetch a public API in the sidebar.': '실제 시장 데이터를 저장해 불러오거나, 사이드바에서 CSV 업로드 또는 공개 API 수집을 선택하세요.',
     'BTC / DAILY RESEARCH WORKSPACE': 'BTC / 일별 시장 분석',
     'Data source': '데이터 출처', 'Synthetic demo': '가상 데이터 데모',
     'Local snapshot': '저장된 데이터', 'Upload CSV': 'CSV 업로드', 'Fetch public API': '공개 API에서 가져오기',

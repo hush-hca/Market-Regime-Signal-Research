@@ -6,7 +6,7 @@ Use **Language / 언어** in the sidebar to switch between English and Korean. D
 
 **AI market regime identification and signal research for BTC.** A Streamlit dashboard combining causal features, walk-forward clustering, transparent conditional statistics and an explicit long/cash ledger.
 
-The default dataset is **synthetic and prominently labeled**. Fetch public exchange history or upload licensed data for market research. The covered-call page is a payoff simulator, not a historical options backtest.
+The default view **automatically fetches real Bybit BTCUSDT data** (730 completed daily bars, funding and available OI). Results are cached for up to one hour during app use; use **Refresh exchange data** to retry immediately. If the API is inaccessible, a previously saved, provenance-checked Binance/Bybit snapshot is shown with a warning and its original date. Without one, the app displays an error. There is no synthetic demo option or synthetic fallback. The covered-call page remains a payoff simulator, not a historical options backtest.
 
 ## Quick start
 
@@ -23,7 +23,7 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The demo works without credentials or network access after installation.
+The default API view needs outbound network access to Bybit; regional restrictions may prevent access. Saved snapshots work without network access after collection. Raw market data is not committed to Git. If both API access and a valid snapshot are unavailable, upload a CSV or retry the API; the app never generates replacement prices.
 
 For the exact tested environment, install `requirements-lock.txt` instead. The lock was generated on Windows/Python 3.12; use the supported ranges in `requirements.txt` if platform-specific transitive packages need different resolution.
 
@@ -157,4 +157,4 @@ The sidebar changes the suggested presentation emphasis, without altering resear
 - **Exchanges:** funding conventions, derivatives coverage, freshness and indicator education.
 - **Options teams:** payoff assumptions, capped upside and requirements for a historical quote dataset.
 
-To deploy on a Streamlit-compatible host, install `requirements.txt` and use `app.py` as the entrypoint. No secrets are needed for the default demo. Raw data, credentials and local snapshots are ignored by Git.
+To deploy on a Streamlit-compatible host, install `requirements.txt` and use `app.py` as the entrypoint. Fetch a real snapshot on the host or use the public-API control; no exchange trading credentials are required. Raw data, credentials and local snapshots are ignored by Git.

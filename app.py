@@ -9,8 +9,9 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from regime.data import demo, validate, enrich, quality
+from regime.data import validate, enrich, quality
 from regime.ingest import download
+from regime.feed import load_market
 from regime.research import Config, features, walk_forward, events, summarize, strategy, payoff
 from regime.i18n import translate, error_text, display_frame, translate_figure
 
@@ -49,6 +50,10 @@ h1 {letter-spacing:-1.5px;word-break:keep-all} .eyebrow {color:#208b72;letter-sp
 </style>''',unsafe_allow_html=True)
 COLORS={'Defensive':'#ff7d85','Soft / mixed':'#d5a65e','Firm / mixed':'#719cff','Expansion':'#42d6ad','Unclassified':'#526078'}
 
+@st.cache_data(ttl=3600,show_spinner=False)
+def exchange_data():
+    return load_market()
+
 @st.cache_data(show_spinner=False)
 def analyze(d, oi, chain):
     f=features(d,oi,chain)
@@ -68,12 +73,18 @@ def percent_table(frame):
 with st.sidebar:
     st.markdown('### ◈ REGIME ATLAS')
     st.caption(t('BTC / DAILY RESEARCH WORKSPACE'))
-    source=choice(st,'Data source',['Synthetic demo','Local snapshot','Upload CSV','Fetch public API'])
+    source=choice(st,'Data source',['Exchange data','Local snapshot','Upload CSV','Fetch public API'])
     d=None
-    meta={'source':'synthetic','synthetic':True,'price_instrument':'synthetic price path'}
+    meta={}
     try:
-        if source=='Synthetic demo':
-            d=demo()
+        if source=='Exchange data':
+            if st.button(t('Refresh exchange data'),key='refresh_exchange'):
+                exchange_data.clear()
+            st.caption(t('Bybit BTCUSDT · completed daily bars · cached for up to one hour.'))
+            with st.spinner(t('Fetching price, funding and available OI…')):
+                d,meta,notice=exchange_data()
+            if notice:
+                st.warning(t(notice))
         elif source=='Local snapshot':
             path=Path('data/market.parquet')
             if path.exists():
@@ -111,7 +122,7 @@ st.markdown('<div class="eyebrow">'+t('MARKET INTELLIGENCE / RESEARCH MVP')+'</d
 st.title(t('Understand the regime. Inspect the evidence.'))
 st.caption(t('Price, positioning and on-chain context — with transparent historical outcomes.'))
 if d is None:
-    st.info(t('Select synthetic demo, upload a validated dataset, or fetch a public API in the sidebar.'))
+    st.info(t('Load a real market snapshot, upload your dataset, or fetch a public API in the sidebar.'))
     st.stop()
 if meta.get('synthetic'):
     st.warning(t('SYNTHETIC DEMO — generated prices and indicators. All results demonstrate software behavior; they are not market evidence.'))

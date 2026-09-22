@@ -1,11 +1,13 @@
 from pathlib import Path
 from streamlit.testing.v1 import AppTest
 
-def test_dashboard_demo_and_controls_render():
+def test_dashboard_snapshot_and_controls_render(market_snapshot):
     app=AppTest.from_file(str(Path(__file__).parents[1]/'app.py'),default_timeout=60).run()
     assert not app.exception
+    assert app.selectbox(key='Data source::en').value=='Exchange data'
+    assert 'Synthetic demo' not in app.selectbox(key='Data source::en').options
     assert len(app.tabs)==5
-    assert any('SYNTHETIC' in w.value for w in app.warning)
+    assert not any('SYNTHETIC' in w.value for w in app.warning)
     next(s for s in app.selectbox if s.label=='Forward horizon').select(7).run()
     assert not app.exception
     app.checkbox[0].check().run()
@@ -13,3 +15,16 @@ def test_dashboard_demo_and_controls_render():
     next(s for s in app.selectbox if s.label=='Evaluation segment').select('Walk-forward').run()
     next(s for s in app.selectbox if s.label=='Accounting').select('Perpetual with daily funding').run()
     assert not app.exception
+
+def test_missing_snapshot_never_falls_back_to_synthetic(tmp_path,monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    import regime.feed
+    import streamlit as st
+    st.cache_data.clear()
+    def offline(*args): raise ConnectionError('offline test')
+    monkeypatch.setattr(regime.feed,'download',offline)
+    app=AppTest.from_file(str(Path(__file__).parents[1]/'app.py'),default_timeout=60).run()
+    assert not app.exception
+    assert not app.metric
+    assert not any('SYNTHETIC DEMO' in warning.value for warning in app.warning)
+    assert any('no verified real snapshot' in message.value for message in app.error)

@@ -28,3 +28,7 @@ No automatic scheduled/incremental ingestion, direct paid on-chain integration, 
 ## Korean localization follow-up
 
 The expanded suite passes 16 tests. Language tests verify Korean tabs and warnings, canonical data preservation, unchanged metric values and retained horizon/fee settings when switching both ways. Browser inspection verified Korean selections, chart legends and tables. Metric cards now wrap at narrow widths. Export schemas and raw provenance identifiers remain stable in English; framework controls and raw diagnostic details may remain English.
+
+## Real-data default
+
+The dashboard now defaults to an automatic real Bybit API fetch with a one-hour cache and manual refresh. The synthetic choice is removed. A verified local snapshot is used with a warning only if the API fails. The local Bybit snapshot contains 730 completed daily bars through 2026-09-17 UTC, with no missing daily funding or OI. A fresh download attempted on 2026-09-22 was blocked by this execution environment's network restrictions, so the existing real snapshot was retained with its original retrieval time and a stale-data warning. New deployments need API access or an uploaded/saved dataset. Offline tests simulate API transport using generated fixtures; these are not production inputs. Regression tests cover API failure with no snapshot and rejection of a synthetic fallback snapshot.
