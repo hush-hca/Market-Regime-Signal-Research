@@ -14,8 +14,16 @@ from regime.ingest import download
 from regime.feed import load_market
 from regime.onchain import load_coinmetrics
 from regime.options import load_quotes, select_call, inverse_call_payoff
+from regime.signals import context_signals
+from regime.evaluation import evaluate_feature_sets
+from regime.options_backtest import covered_call_events
+from regime.history import read_history_zip
+from regime.vintages import enrich_vintages
+from regime.build import build_id
 from regime.research import Config, features, walk_forward, events, summarize, strategy, payoff
 from regime.i18n import translate, error_text, display_frame, translate_figure
+
+BUILD_ID=build_id()
 
 st.set_page_config(page_title='Regime Atlas · Market Research',page_icon='◈',layout='wide')
 language=st.sidebar.selectbox('Language / 언어', ['en','ko'],
@@ -85,6 +93,7 @@ def percent_table(frame):
 with st.sidebar:
     st.markdown('### ◈ REGIME ATLAS')
     st.caption(t('BTC / DAILY RESEARCH WORKSPACE'))
+    st.caption(t('Build')+': '+BUILD_ID)
     source=choice(st,'Data source',['Exchange data','Local snapshot','Upload CSV','Fetch public API'])
     d=None
     meta={}
@@ -120,8 +129,14 @@ with st.sidebar:
         chain_source=choice(st,'On-chain source',['Coin Metrics (noncommercial)','CSV only / off'])
         chain_csv=st.file_uploader(t('Optional on-chain CSV'),type=['csv'],help=t('Requires available_at and mvrv, sopr or exchange_netflow. Only use data you are licensed to process.'), key='Optional on-chain CSV')
         if d is not None and chain_csv:
-            d=enrich(d,chain_csv.getvalue().decode('utf-8-sig'))
-            meta={**meta,'onchain':'user upload; availability timestamps supplied by user'}
+            text=chain_csv.getvalue().decode('utf-8-sig')
+            uploaded_chain=pd.read_csv(io.StringIO(text))
+            if {'observation_time','retrieved_at'}<=set(uploaded_chain):
+                d=enrich_vintages(d,uploaded_chain)
+                meta['onchain']='user-uploaded as-recorded vintages; availability and retrieval timestamps supplied by user'
+            else:
+                d=enrich(d,text)
+                meta['onchain']='user upload; availability timestamps supplied by user; vintage not verified'
         elif d is not None and chain_source=='Coin Metrics (noncommercial)':
             try:
                 chain,chain_meta=onchain_data(d.date.min(),d.date.max())
@@ -164,7 +179,7 @@ try:
 except ValueError as exc:
     show_error(exc)
     st.stop()
-manifest.update(source=meta,dataset_sha256=hashlib.sha256(d.to_csv(index=False).encode()).hexdigest(),
+manifest.update(build_id=BUILD_ID,evaluation_status='Exploratory; previously inspected holdout',source=meta,dataset_sha256=hashlib.sha256(d.to_csv(index=False).encode()).hexdigest(),
     generated_at=pd.Timestamp.now(tz='UTC').isoformat())
 latest=r.iloc[-1]
 a,b,c,e=st.columns(4)
@@ -176,6 +191,11 @@ st.caption(t(t('{count} daily observations · {start} → {end} · Source: {sour
 tabs=st.tabs([t(name) for name in ['Overview','Historical outcomes','Strategy lab','Options payoff','Data & methodology']])
 
 with tabs[0]:
+    context=context_signals(d)
+    with st.expander(t('Negative funding + low MVRV hypothesis')):
+        st.write(t('Daily funding flips below zero and MVRV falls below its prior 365-observation 20th percentile, with at least 180 prior observations. This describes context; it does not establish capital inflow.'))
+        st.dataframe(display_frame(context.tail(1),language),hide_index=True)
+        st.caption(t('Missing inputs remain unknown. Thresholds use only earlier observations.'))
     available_metrics=[name for name in ['mvrv','sopr','exchange_netflow'] if name in d]
     if available_metrics:
         st.subheader(t('On-chain observations aligned to market dates'))
@@ -206,7 +226,22 @@ with tabs[0]:
             'Open interest':'Outstanding derivative exposure. USD OI moves with both position size and price. Rising OI does not identify which side will win.',
             'MVRV & SOPR':'MVRV compares market value with realized value; SOPR describes spent-output profitability. Provider definitions and publication times matter.',
             'Exchange net flows':'Deposits minus withdrawals for labeled exchange addresses. Transfers are not equivalent to executed selling or buying.'}.items():
-            with st.expander(t(name)): st.write(t(explanation))
+            with st.expander(t(name)):
+                st.markdown('**'+t('If you are new to this metric')+'**')
+                st.write(t(explanation))
+                details={
+                    'Funding':('Rate fraction per day; displayed as a percent.','Compare the sign and persistence across days.','The sign does not identify future returns or prove a reversal.'),
+                    'Open interest':('USD exposure proxy.','Compare OI changes with price and volume together.','A rise can reflect price changes or new positions; it is not a directional vote.'),
+                    'MVRV & SOPR':('Dimensionless ratios.','Read historical percentiles and provider definitions; low is relative to the chosen history.','Neither ratio alone establishes undervaluation or a profitable entry.'),
+                    'Exchange net flows':('USD deposits minus withdrawals.','Positive means net deposits; negative means net withdrawals for labeled addresses.','Transfers do not prove executed purchases or sales.')
+                }
+                units,reading,limitation=details[name]
+                st.markdown('**'+t('Units')+'**: '+t(units))
+                st.markdown('**'+t('How to read this chart')+'**: '+t(reading))
+                st.markdown('**'+t('What this cannot tell you')+'**: '+t(limitation))
+                st.caption(t('Source and freshness')+': '+str(meta.get('source'))+' · '+f'{d.date.max():%Y-%m-%d} UTC')
+                if name in ['MVRV & SOPR','Exchange net flows']:
+                    st.caption(t('On-chain source and original observation dates are recorded in Data & methodology. SOPR stays unavailable unless supplied.'))
     st.subheader(t('Persistence & transitions'))
     observed=r[r.regime!='Unclassified'].copy()
     transition=pd.crosstab(observed.regime.shift(),observed.regime,normalize='index')
@@ -214,12 +249,19 @@ with tabs[0]:
     st.caption(t('Descriptive transition frequencies across all classified dates, including refit boundaries; not a forecast.'))
 
 with tabs[1]:
+    st.warning(t('Exploratory evaluation: this holdout has already been inspected. New model choices require a new untouched evaluation period.'))
     st.subheader(t('What happened after similar observations?'))
     l,m,n=st.columns(3)
     horizon=choice(l,'Forward horizon',[7,14,30],index=2)
     partition=choice(m,'Evaluation segment',['Final holdout','Walk-forward'])
-    taxonomy=choice(n,'Grouping',['ML clusters','Indicator rules'])
-    ev=events(d,r,horizon,partition,'regime' if taxonomy=='ML clusters' else 'rule')
+    taxonomy=choice(n,'Grouping',['ML clusters','Indicator rules','On-chain hypothesis'])
+    grouped_regimes=r.copy()
+    if taxonomy=='On-chain hypothesis':
+        observed_context=context_signals(d).hypothesis_active
+        grouped_regimes['rule']='Unclassified'
+        grouped_regimes.loc[observed_context.notna(),'rule']='Other observed context'
+        grouped_regimes.loc[observed_context.fillna(False),'rule']='Negative funding / low MVRV'
+    ev=events(d,grouped_regimes,horizon,partition,'regime' if taxonomy=='ML clusters' else 'rule')
     summary=summarize(ev)
     st.caption(t('Signal at daily close → next daily open entry → open exit after the selected calendar-day horizon. Globally non-overlapping windows; raw asset returns before costs.'))
     if ev.empty:
@@ -230,6 +272,17 @@ with tabs[1]:
         st.warning(t('Small samples are expected: 180 days contain at most about six non-overlapping 30-day windows. Intervals are suppressed below five samples and remain approximate above that threshold.'))
         st.caption(t('Intervals use a moving-block bootstrap. “All sampled dates” uses the same eligible dates. These sampled windows are not independent market episodes. Repeated holdout inspection makes subsequent model choices exploratory.'))
         st.download_button(t('Download event ledger'),ev.to_csv(index=False),'events.csv','text/csv', key='Download event ledger')
+
+    if st.checkbox(t('Compare feature sets on common dates'),key='compare_feature_sets'):
+        try:
+            comparison=evaluate_feature_sets(d,horizon,partition)
+            st.dataframe(display_frame(comparison['coverage'],language),hide_index=True)
+            st.dataframe(display_frame(comparison['summary'],language),hide_index=True)
+            st.caption(t('Price-only, derivatives and on-chain clusters use common eligible event dates. Different conditional distributions do not prove predictive improvement. Missing feature sets are listed in the manifest.'))
+            st.download_button(t('Download feature comparison'),comparison['summary'].to_csv(index=False),'feature-comparison.csv','text/csv')
+            st.json(comparison['manifest'])
+        except ValueError as exc:
+            show_error(exc,warning=True)
 
 with tabs[2]:
     st.subheader(t('A predefined rule, an explicit ledger'))
@@ -251,6 +304,30 @@ with tabs[2]:
         ledger=pd.DataFrame()
 
 with tabs[3]:
+    with st.expander(t('Historical covered-call research')):
+        st.caption(t('Upload an archived quote bundle to calculate expiry-accounting returns. Current quotes are never substituted for historical premiums. User-supplied provenance requires review.'))
+        history_file=st.file_uploader(t('Historical option bundle (ZIP)'),type=['zip'],key='option_history')
+        spot_fee=st.number_input(t('Assumed spot entry fee (bps)'),min_value=0.,value=5.,key='historical_spot_fee')
+        option_fee=st.number_input(t('Assumed option entry fee (BTC)'),min_value=0.,value=.0003,format='%.6f',key='historical_option_fee')
+        settlement_fee=st.number_input(t('Assumed settlement fee (BTC)'),min_value=0.,value=.00015,format='%.6f',key='historical_settlement_fee')
+        st.caption(t('One BTC covered call; bid-price assumption; no guaranteed fill or margin-path simulation. Remaining BTC is marked at expiry, with no spot exit fee. Fee inputs are assumptions, not verified historical fees.'))
+        if history_file is not None:
+            try:
+                history=read_history_zip(history_file.getvalue())
+                option_events=covered_call_events(r.loc[r.partition.eq(partition),['date','regime']],
+                    history['spot'],history['quotes'],history['instruments'],history['settlements'],
+                    dict(spot_bps=spot_fee,option_fee_btc=option_fee,settlement_fee_btc=settlement_fee))
+                st.dataframe(display_frame(option_events,language),hide_index=True)
+                completed=option_events[option_events.status.eq('completed')]
+                if completed.empty:
+                    st.info(t('No completed historical option trades with valid quotes and settlements.'))
+                else:
+                    grouped=completed.groupby('regime').agg(n=('covered_call_return','size'),mean=('covered_call_return','mean'),spot_mean=('spot_return','mean'))
+                    st.dataframe(display_frame(grouped,language))
+                    st.warning(t('Small regime samples remain exploratory. These are expiry-accounting results, not an executable margin backtest.'))
+                st.download_button(t('Download historical option ledger'),option_events.to_csv(index=False),'historical-options.csv','text/csv')
+            except (ValueError,KeyError,zipfile.BadZipFile) as exc:
+                show_error(exc,warning=True)
     st.subheader(t('Deribit public BTC call quotes'))
     st.caption(t('Current quotes only; no historical option returns. Target: 30 days ± 14, nearest 110% strike among OTM calls.'))
     if st.button(t('Fetch current option quote'),key='fetch_options'):

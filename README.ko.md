@@ -69,3 +69,14 @@ python -m regime.ingest --venue bybit --days 730
 Coin Metrics MVRV·달러 기준 거래소 순유입을 자동 조회합니다. CC BY-NC 4.0 비상업적 연구 조건이며, 과거 수정 가능성 때문에 온체인 모델 특성은 기본 비활성화 상태입니다. Bybit 실패 시 Binance, 이후 검증된 실제 스냅샷을 사용합니다. 옵션 탭은 Deribit 현재 BTC 콜 호가·조회 시각을 제공하며 과거 옵션 수익률로 표시하지 않습니다.
 
 [SOPR 제약·라이선스·추가 개발 사항 및 출처](docs/free-data-sources.md)를 확인하세요.
+
+## 완료 계획 구현 사항
+
+- GitHub Actions에서 별도 `research-data` 브랜치로 시간별 수집: 검증된 불변 스냅샷·부분 실패 상태·기록 보존. 워크플로가 기본 브랜치에 반영되고 Actions가 활성화되어야 실행됩니다.
+- 동일 날짜의 가격·파생상품·온체인 특성 비교, 음수 펀딩비/낮은 MVRV 가설, 수집 당시 정보를 보존하는 CSV 조인.
+- 실제 과거 호가 ZIP을 이용하는 커버드콜 만기 회계 분석. 현재 호가 시나리오와 분리되며 충분한 과거 호가 확보는 아직 필요합니다.
+- 한국어·영어 지표 설명, 소스 식별자, 데이터·모델 출처가 있는 결과 내보내기.
+
+[운영 방법](docs/operations.md) · [데이터 정의](docs/data-dictionary.md) · [모델 명세](docs/model-specification.md) · [실제 탐색적 결과](docs/research-report.md) · [옵션 회계](docs/options-methodology.md) · [진행 상황 및 외부 제약](docs/execution-ledger.md).
+
+재현: `python -m regime.report --output data/research-report`. 1회 수집: `python -m regime.collect --root data/archive`. 선택한 공개 API에 키는 필요 없지만 IP 접근 제한은 있을 수 있습니다. SOPR 데이터와 인증된 배포 검증은 완료된 것으로 표시하지 않습니다.

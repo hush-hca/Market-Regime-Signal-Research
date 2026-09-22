@@ -209,3 +209,48 @@ KO.update({
 })
 
 KO["Bybit → Binance → verified snapshot · completed daily bars · one-hour cache."]="Bybit → Binance → 검증된 스냅샷 · 완료된 일봉 · 1시간 캐시."
+
+KO.update({
+'Build':'빌드',
+'Negative funding + low MVRV hypothesis':'음수 펀딩비 + 낮은 MVRV 가설',
+'Daily funding flips below zero and MVRV falls below its prior 365-observation 20th percentile, with at least 180 prior observations. This describes context; it does not establish capital inflow.':'일별 펀딩비가 음수로 전환되고 MVRV가 이전 365개 관측값의 하위 20%보다 낮은 조건입니다. 최소 180개 이전 관측값이 필요하며, 자금 유입을 입증하지는 않습니다.',
+'Missing inputs remain unknown. Thresholds use only earlier observations.':'결측 입력은 알 수 없음으로 유지합니다. 임계값에는 이전 관측값만 사용합니다.',
+'Exploratory evaluation: this holdout has already been inspected. New model choices require a new untouched evaluation period.':'탐색적 평가: 이 홀드아웃은 이미 확인한 구간입니다. 새로운 모델 선택을 검증하려면 아직 확인하지 않은 평가 구간이 필요합니다.',
+'Compare feature sets on common dates':'동일 날짜에서 특성 조합 비교',
+'Price-only, derivatives and on-chain clusters use common eligible event dates. Different conditional distributions do not prove predictive improvement. Missing feature sets are listed in the manifest.':'가격·파생상품·온체인 군집을 동일한 이벤트 날짜에서 비교합니다. 조건부 분포 차이가 예측력 향상을 입증하지는 않습니다. 사용 불가한 특성 조합은 명세에 표시합니다.',
+'Download feature comparison':'특성 비교 다운로드',
+'Historical covered-call research':'과거 커버드콜 연구',
+'Upload an archived quote bundle to calculate expiry-accounting returns. Current quotes are never substituted for historical premiums. User-supplied provenance requires review.':'저장된 과거 호가 묶음을 업로드하면 만기 기준 수익률을 계산합니다. 현재 호가를 과거 프리미엄으로 대체하지 않으며 업로드 출처는 검토가 필요합니다.',
+'Historical option bundle (ZIP)':'과거 옵션 데이터 묶음 (ZIP)',
+'Assumed spot entry fee (bps)':'현물 진입 수수료 가정 (bp)',
+'Assumed option entry fee (BTC)':'옵션 진입 수수료 가정 (BTC)',
+'Assumed settlement fee (BTC)':'만기 결제 수수료 가정 (BTC)',
+'One BTC covered call; bid-price assumption; no guaranteed fill or margin-path simulation. Remaining BTC is marked at expiry, with no spot exit fee. Fee inputs are assumptions, not verified historical fees.':'1 BTC 커버드콜·매수호가 체결 가정이며 체결 보장 및 증거금 경로 모의실험은 없습니다. 잔여 BTC는 만기에 평가하고 현물 청산 수수료는 제외합니다. 입력 수수료는 검증된 과거 수수료가 아닌 가정입니다.',
+'No completed historical option trades with valid quotes and settlements.':'유효한 과거 호가와 결제값이 있는 완료 거래가 없습니다.',
+'Small regime samples remain exploratory. These are expiry-accounting results, not an executable margin backtest.':'국면별 소표본은 탐색적 결과입니다. 만기 기준 회계 결과이며 실행 가능한 증거금 백테스트가 아닙니다.',
+'Download historical option ledger':'과거 옵션 거래 원장 다운로드',
+'funding_flip_negative':'펀딩비 음수 전환','mvrv_low':'낮은 MVRV','hypothesis_active':'가설 조건 충족','mvrv_prior_p20':'이전 MVRV 하위 20% 임계값',
+'feature_set':'특성 조합','Price only':'가격만','Price + derivatives':'가격 + 파생상품','Price + derivatives + on-chain':'가격 + 파생상품 + 온체인',
+'classified_dates':'분류된 날짜 수','common_dates':'공통 날짜 수','events':'이벤트 수','episodes_in_segment':'평가 구간 국면 발생 횟수',
+'status':'상태','completed':'완료','no_valid_quote':'유효 호가 없음','missing_settlement':'만기 결제값 없음','position_already_open':'기존 포지션 보유 중','unclassified':'미분류',
+'covered_call_return':'커버드콜 수익률','spot_return':'현물 수익률','spot_mean':'현물 평균 수익률',
+'Units':'단위','How to read this chart':'차트 읽는 방법','If you are new to this metric':'이 지표가 처음이라면','What this cannot tell you':'이 지표로 알 수 없는 것','Source and freshness':'출처 및 최신성'
+})
+
+KO.update({
+'Rate fraction per day; displayed as a percent.':'일별 비율이며 화면에는 백분율로 표시합니다.',
+'Compare the sign and persistence across days.':'여러 날에 걸친 부호와 지속성을 비교하세요.',
+'The sign does not identify future returns or prove a reversal.':'부호만으로 미래 수익률이나 추세 반전을 판단할 수 없습니다.',
+'USD exposure proxy.':'달러 기준 익스포저 근사값입니다.',
+'Compare OI changes with price and volume together.':'미결제약정 변화를 가격·거래량과 함께 비교하세요.',
+'A rise can reflect price changes or new positions; it is not a directional vote.':'상승은 가격 변화나 신규 포지션 때문일 수 있으며 방향성을 확정하지 않습니다.',
+'Dimensionless ratios.':'단위가 없는 비율입니다.',
+'Read historical percentiles and provider definitions; low is relative to the chosen history.':'과거 백분위와 제공자 정의를 확인하세요. 낮다는 판단은 선택한 과거 구간에 상대적입니다.',
+'Neither ratio alone establishes undervaluation or a profitable entry.':'어느 비율도 단독으로 저평가나 수익성 있는 진입을 입증하지 못합니다.',
+'USD deposits minus withdrawals.':'달러 기준 입금에서 출금을 뺀 값입니다.',
+'Positive means net deposits; negative means net withdrawals for labeled addresses.':'라벨이 있는 주소에서 양수는 순입금, 음수는 순출금을 뜻합니다.',
+'Transfers do not prove executed purchases or sales.':'이체는 실제 매수·매도 체결을 입증하지 않습니다.',
+'On-chain source and original observation dates are recorded in Data & methodology. SOPR stays unavailable unless supplied.':'온체인 출처와 원래 관측 날짜는 데이터 및 분석 방법에 기록됩니다. SOPR은 제공되지 않으면 사용 불가로 유지합니다.'
+})
+
+KO.update({'On-chain hypothesis':'온체인 가설','Other observed context':'기타 관측된 조건','Negative funding / low MVRV':'음수 펀딩비 / 낮은 MVRV'})

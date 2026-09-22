@@ -48,10 +48,12 @@ def walk_forward(d, f, config=Config()):
     result['partition'] = np.where(np.arange(n)>=cutoff,'Final holdout','Walk-forward')
     result.loc[:config.train_days-1,'partition'] = 'Warm-up'
     valid = f.notna().all(axis=1)
+    # Indicator-rule labels are separate from the model's selected feature columns.
+    funding_7 = f['funding_7'] if 'funding_7' in f else d.funding.rolling(7).mean()
     rules = np.select([
-        (f.momentum_30>0)&(f.funding_7>0),
-        (f.momentum_30<0)&(f.funding_7<0),
-        (f.momentum_30>0)&(f.funding_7<=0)],
+        (f.momentum_30>0)&(funding_7>0),
+        (f.momentum_30<0)&(funding_7<0),
+        (f.momentum_30>0)&(funding_7<=0)],
         ['Positive trend / positive funding','Negative trend / negative funding','Positive trend / negative funding'],
         default='Mixed trend / funding')
     result.loc[valid,'rule'] = rules[valid]

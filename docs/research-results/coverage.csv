@@ -1,0 +1,10 @@
+feature_set,classified_dates,common_dates,events,horizon
+Price only,180,180,25,7
+Price + derivatives,180,180,25,7
+Price + derivatives + on-chain,180,180,25,7
+Price only,180,180,12,14
+Price + derivatives,180,180,12,14
+Price + derivatives + on-chain,180,180,12,14
+Price only,180,180,5,30
+Price + derivatives,180,180,5,30
+Price + derivatives + on-chain,180,180,5,30

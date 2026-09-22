@@ -164,3 +164,14 @@ To deploy on a Streamlit-compatible host, install `requirements.txt` and use `ap
 Coin Metrics MVRV and USD exchange net flows now load automatically for noncommercial research (CC BY-NC 4.0). Optional on-chain model features remain exploratory and off by default because historical values may be revised. Bybit falls back to Binance, then verified real snapshots. The Options tab fetches current Deribit BTC call bids and exports timestamped quotes; it does not claim historical options returns.
 
 See [source research, licensing, limitations and production next steps](docs/free-data-sources.md).
+
+## Implemented completion-plan increments
+
+- Hourly GitHub Actions collection to the separate `research-data` branch; immutable verified snapshots, partial-failure status and durable history. The schedule starts only after this workflow reaches the default branch and Actions is enabled.
+- Common-date price/derivatives/on-chain comparisons, explicit negative-funding/low-MVRV hypothesis, and as-recorded CSV vintage joins.
+- Historical covered-call expiry accounting from uploaded real quote bundles, separate from current quote scenarios. Historical quote coverage is still an external dependency.
+- English/Korean explanations, source fingerprint and exported research provenance.
+
+[Operations](docs/operations.md) · [Data definitions](docs/data-dictionary.md) · [Model specification](docs/model-specification.md) · [Actual exploratory findings](docs/research-report.md) · [Option accounting](docs/options-methodology.md) · [Execution status and external gates](docs/execution-ledger.md).
+
+Reproduce results: `python -m regime.report --output data/research-report`. Collect once: `python -m regime.collect --root data/archive`. No provider credentials are required for the selected public feeds; access restrictions may still prevent a refresh. SOPR and authenticated deployment verification are not claimed complete.

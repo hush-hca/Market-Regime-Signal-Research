@@ -1,0 +1,592 @@
+{
+  "source": {
+    "source": "bybit",
+    "symbol": "BTCUSDT",
+    "downloaded_at": "2026-09-18T17:33:17.249158+00:00",
+    "oi_note": "Bybit native BTC OI converted to USD with daily open; venue-reported coverage.",
+    "price_instrument": "USDT perpetual",
+    "volume_unit": "USDT quote turnover",
+    "funding_unit": "sum of realized funding fractions per UTC day",
+    "synthetic": false,
+    "note": "Current-vintage API history; publication delays and historical revisions are not independently reconstructed.",
+    "sha256": "24c1d8ee8518fdd9ee06325832a591a9438bb452e5015e9af53bea7f2dabd96e",
+    "purpose": "Bundled historical real-data fallback, not a live market feed"
+  },
+  "onchain": {
+    "source": "Coin Metrics Community API",
+    "synthetic": false,
+    "url": "https://community-api.coinmetrics.io/v4/timeseries/asset-metrics",
+    "license": "CC BY-NC 4.0 \u00b7 Coin Metrics \u00b7 noncommercial use with attribution",
+    "retrieved_at": "2026-09-22T05:14:11.853887558+00:00",
+    "sha256": "9e403e7cfebfbadac98bc35e572a5be0816fe37c8a3049a39429b64127ecda51",
+    "rows": 751,
+    "observation_end": "2026-09-21 00:00:00+00:00",
+    "availability": "Assumed 48h lag, current-vintage, not point-in-time",
+    "metrics": "CapMVRVCur,FlowInExUSD,FlowOutExUSD"
+  },
+  "build_id": "ee374db5aa04",
+  "evaluation_status": "Exploratory; previously inspected holdout",
+  "horizons": {
+    "7": {
+      "config": {
+        "train_days": 365,
+        "refit_days": 90,
+        "holdout_days": 180,
+        "clusters": 4,
+        "seed": 42
+      },
+      "horizon": 7,
+      "partition": "Final holdout",
+      "evaluation_status": "Exploratory; previously inspected holdout",
+      "feature_columns": {
+        "Price only": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "volume_z"
+        ],
+        "Price + derivatives": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "funding_7",
+          "volume_z",
+          "oi_change_7"
+        ],
+        "Price + derivatives + on-chain": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "funding_7",
+          "volume_z",
+          "oi_change_7",
+          "mvrv",
+          "exchange_netflow"
+        ]
+      },
+      "unavailable_feature_sets": {},
+      "unavailable_metrics": [
+        "sopr"
+      ],
+      "dataset_sha256": "0fbf4b6f06c857179348e5b38678270459a447a6d03bffb3816a01ea4f399164",
+      "fits": {
+        "Price only": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "volume_z"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        },
+        "Price + derivatives": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "funding_7",
+            "volume_z",
+            "oi_change_7"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        },
+        "Price + derivatives + on-chain": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "funding_7",
+            "volume_z",
+            "oi_change_7",
+            "mvrv",
+            "exchange_netflow"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        }
+      },
+      "interpretation": "Conditional distributions on common eligible dates; not model-selected trading performance."
+    },
+    "14": {
+      "config": {
+        "train_days": 365,
+        "refit_days": 90,
+        "holdout_days": 180,
+        "clusters": 4,
+        "seed": 42
+      },
+      "horizon": 14,
+      "partition": "Final holdout",
+      "evaluation_status": "Exploratory; previously inspected holdout",
+      "feature_columns": {
+        "Price only": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "volume_z"
+        ],
+        "Price + derivatives": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "funding_7",
+          "volume_z",
+          "oi_change_7"
+        ],
+        "Price + derivatives + on-chain": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "funding_7",
+          "volume_z",
+          "oi_change_7",
+          "mvrv",
+          "exchange_netflow"
+        ]
+      },
+      "unavailable_feature_sets": {},
+      "unavailable_metrics": [
+        "sopr"
+      ],
+      "dataset_sha256": "0fbf4b6f06c857179348e5b38678270459a447a6d03bffb3816a01ea4f399164",
+      "fits": {
+        "Price only": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "volume_z"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        },
+        "Price + derivatives": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "funding_7",
+            "volume_z",
+            "oi_change_7"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        },
+        "Price + derivatives + on-chain": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "funding_7",
+            "volume_z",
+            "oi_change_7",
+            "mvrv",
+            "exchange_netflow"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        }
+      },
+      "interpretation": "Conditional distributions on common eligible dates; not model-selected trading performance."
+    },
+    "30": {
+      "config": {
+        "train_days": 365,
+        "refit_days": 90,
+        "holdout_days": 180,
+        "clusters": 4,
+        "seed": 42
+      },
+      "horizon": 30,
+      "partition": "Final holdout",
+      "evaluation_status": "Exploratory; previously inspected holdout",
+      "feature_columns": {
+        "Price only": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "volume_z"
+        ],
+        "Price + derivatives": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "funding_7",
+          "volume_z",
+          "oi_change_7"
+        ],
+        "Price + derivatives + on-chain": [
+          "momentum_7",
+          "momentum_30",
+          "volatility_30",
+          "funding_7",
+          "volume_z",
+          "oi_change_7",
+          "mvrv",
+          "exchange_netflow"
+        ]
+      },
+      "unavailable_feature_sets": {},
+      "unavailable_metrics": [
+        "sopr"
+      ],
+      "dataset_sha256": "0fbf4b6f06c857179348e5b38678270459a447a6d03bffb3816a01ea4f399164",
+      "fits": {
+        "Price only": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "volume_z"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        },
+        "Price + derivatives": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "funding_7",
+            "volume_z",
+            "oi_change_7"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        },
+        "Price + derivatives + on-chain": {
+          "config": {
+            "train_days": 365,
+            "refit_days": 90,
+            "holdout_days": 180,
+            "clusters": 4,
+            "seed": 42
+          },
+          "features": [
+            "momentum_7",
+            "momentum_30",
+            "volatility_30",
+            "funding_7",
+            "volume_z",
+            "oi_change_7",
+            "mvrv",
+            "exchange_netflow"
+          ],
+          "fits": [
+            {
+              "model_version": "fit-365",
+              "train_end": "2025-09-17T00:00:00+00:00",
+              "train_rows": 335,
+              "test_start": "2025-09-18T00:00:00+00:00",
+              "test_end": "2025-12-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-455",
+              "train_end": "2025-12-16T00:00:00+00:00",
+              "train_rows": 425,
+              "test_start": "2025-12-17T00:00:00+00:00",
+              "test_end": "2026-03-16T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-545",
+              "train_end": "2026-03-16T00:00:00+00:00",
+              "train_rows": 515,
+              "test_start": "2026-03-17T00:00:00+00:00",
+              "test_end": "2026-03-21T00:00:00+00:00"
+            },
+            {
+              "model_version": "fit-550",
+              "train_end": "2026-03-21T00:00:00+00:00",
+              "train_rows": 520,
+              "test_start": "2026-03-22T00:00:00+00:00",
+              "test_end": "2026-09-17T00:00:00+00:00"
+            }
+          ]
+        }
+      },
+      "interpretation": "Conditional distributions on common eligible dates; not model-selected trading performance."
+    }
+  }
+}
