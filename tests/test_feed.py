@@ -58,6 +58,7 @@ def test_isolated_deployment_tree_has_offline_fallback(tmp_path):
 import regime.feed
 def offline(*args): raise ConnectionError('deployment cannot reach exchange')
 regime.feed.download=offline
+regime.feed.read_repository_snapshot=offline
 frame,meta,notice=regime.feed.load_market()
 assert len(frame)==730 and meta['synthetic'] is False
 assert frame.date.max().strftime('%Y-%m-%d')=='2026-09-17'
