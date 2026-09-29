@@ -1,0 +1,20 @@
+{
+  "dataset": "market_binance",
+  "downloaded_at": "2026-09-29T20:45:17.596823+00:00",
+  "funding_unit": "sum of realized funding fractions per UTC day",
+  "note": "Current-vintage API history; publication delays and historical revisions are not independently reconstructed.",
+  "observation_end": "2026-09-28T00:00:00+00:00",
+  "oi_note": "Binance recent OI only; no historical backfill assumed.",
+  "price_instrument": "USDT perpetual",
+  "retrieved_at": "2026-09-29T20:45:08.649886+00:00",
+  "rows": 737,
+  "schema_version": 1,
+  "sha256": "0579f367bc4bb3b18a4fa10ea59a53a3d9d526e346ac054a47cc122dd5ca6305",
+  "source": "binance",
+  "symbol": "BTCUSDT",
+  "synthetic": false,
+  "validation": "passed",
+  "version_id": "8007419284015510f804681efe1103217c4dc71c759b70ebc9e86bf97e91f300",
+  "vintage": "current; revisions retained as immutable snapshots",
+  "volume_unit": "USDT quote turnover"
+}
