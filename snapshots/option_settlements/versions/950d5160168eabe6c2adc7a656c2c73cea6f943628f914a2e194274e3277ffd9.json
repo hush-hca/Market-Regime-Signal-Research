@@ -1,0 +1,13 @@
+{
+  "dataset": "option_settlements",
+  "license": "Provider public API terms; review before redistribution",
+  "retrieved_at": "2026-09-30T00:25:03.299795+00:00",
+  "rows": 100,
+  "schema_version": 1,
+  "sha256": "faf264e3eac120bb9926b2c2604912c5bd42b75c6f73a7121d7b2736099706b9",
+  "source": "deribit",
+  "synthetic": false,
+  "validation": "passed",
+  "version_id": "950d5160168eabe6c2adc7a656c2c73cea6f943628f914a2e194274e3277ffd9",
+  "vintage": "observed live"
+}
