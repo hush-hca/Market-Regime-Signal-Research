@@ -1,0 +1,20 @@
+{
+  "dataset": "market_bybit",
+  "downloaded_at": "2026-09-30T19:17:08.403700+00:00",
+  "funding_unit": "sum of realized funding fractions per UTC day",
+  "note": "Current-vintage API history; publication delays and historical revisions are not independently reconstructed.",
+  "observation_end": "2026-09-29T00:00:00+00:00",
+  "oi_note": "Bybit native BTC OI converted to USD with daily open; venue-reported coverage.",
+  "price_instrument": "USDT perpetual",
+  "retrieved_at": "2026-09-30T19:17:05.070380+00:00",
+  "rows": 731,
+  "schema_version": 1,
+  "sha256": "8c827c2c08de4e44166a49230a1ab8b927a6dbd4b315861f7d4093ce6ef75015",
+  "source": "bybit",
+  "symbol": "BTCUSDT",
+  "synthetic": false,
+  "validation": "passed",
+  "version_id": "93c828a42b2aa15cf7bce77415acca7b759be932b6059373dc37fd4cbebe8bd1",
+  "vintage": "current; revisions retained as immutable snapshots",
+  "volume_unit": "USDT quote turnover"
+}

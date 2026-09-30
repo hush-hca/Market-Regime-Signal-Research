@@ -1,39 +1,42 @@
 {
-  "as_of": "2026-09-30T13:40:05.876076+00:00",
+  "as_of": "2026-09-30T19:17:05.070380+00:00",
   "datasets": {
     "forward": {
       "completed": 0,
       "models": 6,
-      "records": 90,
+      "records": 99,
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/9f6cc2b14b33a1a8f34201e0a09537a8775a55e88dea95b45fa35921196e8578.json",
-      "missing_funding_rows": 1,
+      "manifest": "market_binance/versions/c6a3e4d37c62b97824daac66430168136a676b4aa1f914f6fdd4010b20848edc.json",
+      "missing_funding_rows": 0,
       "rows": 738,
       "stale": false,
       "status": "ok"
     },
     "market_bybit": {
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1785542400000&end=1790726399999&limit=1000",
-      "status": "error"
+      "manifest": "market_bybit/versions/93c828a42b2aa15cf7bce77415acca7b759be932b6059373dc37fd4cbebe8bd1.json",
+      "missing_funding_rows": 0,
+      "rows": 731,
+      "stale": false,
+      "status": "ok"
     },
     "onchain": {
       "rows": 1094,
       "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/5685a937009669195b44ebaf68664d7e5983c1f1b4e54b6df43e164a969cbd4b.json",
-      "rows": 946,
+      "manifest": "option_instruments/versions/99e364d170c69ad10210595ceb91b2476a35292563aabff1fd3c4a93cfc8fe6a.json",
+      "rows": 948,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/5e6f2db4e9f8b35e2dd89b8776d0cf6391d9f7fa097ffee26af554cae82207fb.json",
-      "rows": 460,
+      "manifest": "option_quotes/versions/16bf705be5d3adac86a2be8e8a36dbc33b76832d628526d22181a25d59cead68.json",
+      "rows": 454,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/2ee6b6c7efbed4b3fe1adf3189ce6d5f37172ef6bee237c1c3c08e824dd65571.json",
+      "manifest": "option_settlements/versions/53e1d01114073a68dfc0f227209645165bac89a4097e40592541edf44784487e.json",
       "rows": 100,
       "status": "ok"
     }
