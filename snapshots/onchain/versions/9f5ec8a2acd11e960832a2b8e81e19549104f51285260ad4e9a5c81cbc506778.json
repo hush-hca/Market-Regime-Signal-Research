@@ -1,0 +1,26 @@
+{
+  "archive_url": "https://raw.githubusercontent.com/coinmetrics/data/master/csv/btc.csv",
+  "availability": "Assumed 48 hours after observation start; current-vintage, not point-in-time data",
+  "dataset": "onchain",
+  "fallback_used": false,
+  "license": "CC BY-NC 4.0 \u00b7 Coin Metrics \u00b7 noncommercial use with attribution",
+  "metrics": [
+    "mvrv",
+    "exchange_netflow"
+  ],
+  "netflow_definition": "FlowInExUSD minus FlowOutExUSD; provider exchange labels",
+  "observation_end": "2026-10-06T00:00:00+00:00",
+  "quality": "Exchange-flow flash/provisional values may be revised; first-publication vintage not reconstructed",
+  "retrieved_at": "2026-10-08T00:11:36.336256+00:00",
+  "rows": 1094,
+  "schema_version": 1,
+  "sha256": "0278b9238a24be1ad74786bba2b9b949010bd56d5ce2536dc4a93cababad6430",
+  "source": "Coin Metrics Community API",
+  "synthetic": false,
+  "unavailable": [
+    "sopr"
+  ],
+  "url": "https://community-api.coinmetrics.io/v4/timeseries/asset-metrics",
+  "validation": "passed",
+  "version_id": "9f5ec8a2acd11e960832a2b8e81e19549104f51285260ad4e9a5c81cbc506778"
+}
