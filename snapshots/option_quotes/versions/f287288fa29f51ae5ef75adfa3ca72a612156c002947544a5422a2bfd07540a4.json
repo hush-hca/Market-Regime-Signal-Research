@@ -1,0 +1,13 @@
+{
+  "dataset": "option_quotes",
+  "license": "Provider public API terms; review before redistribution",
+  "retrieved_at": "2026-10-11T07:10:05.502047+00:00",
+  "rows": 433,
+  "schema_version": 1,
+  "sha256": "688eb6cb43a36708fb4405da3e344d399cea40b0c1e6985009f93a098b862939",
+  "source": "deribit",
+  "synthetic": false,
+  "validation": "passed",
+  "version_id": "f287288fa29f51ae5ef75adfa3ca72a612156c002947544a5422a2bfd07540a4",
+  "vintage": "observed live"
+}
