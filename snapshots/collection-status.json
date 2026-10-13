@@ -1,16 +1,16 @@
 {
-  "as_of": "2026-10-13T02:02:47.416860+00:00",
+  "as_of": "2026-10-13T09:22:59.047832+00:00",
   "datasets": {
     "forward": {
-      "completed": 19,
+      "completed": 21,
       "models": 6,
-      "records": 207,
+      "records": 216,
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/cf74776e119d5e27bc8146a2caec815721a7e81bfb1c784ab4276aba4815eb3c.json",
-      "missing_funding_rows": 11,
-      "rows": 750,
+      "manifest": "market_binance/versions/a2a1a7691d8403adc1276c653695e08d76e260178eb6f36163fb8e30cd1a88b1.json",
+      "missing_funding_rows": 12,
+      "rows": 751,
       "stale": false,
       "status": "ok"
     },
@@ -19,24 +19,12 @@
       "status": "error"
     },
     "onchain": {
-      "manifest": "onchain/versions/8cc5e263e1abb160f9090ac483c4b13b28d5e19df171ce2cd826b133ab873b14.json",
       "rows": 1094,
-      "status": "ok"
+      "status": "cached"
     },
-    "option_instruments": {
-      "manifest": "option_instruments/versions/f8883d8976f01ddde025eceb870e15f4922cece3e133c91cc098f526fc9f863c.json",
-      "rows": 888,
-      "status": "ok"
-    },
-    "option_quotes": {
-      "manifest": "option_quotes/versions/2f6b17b6339ab6dc5e7dba54eb1e44ccaf7c036984217cec449611db7ec549a0.json",
-      "rows": 409,
-      "status": "ok"
-    },
-    "option_settlements": {
-      "manifest": "option_settlements/versions/cb63c73dd3c1881973277fc13c84479d32d89f6f8ee6119bc1e0a3bfa914f1c1.json",
-      "rows": 100,
-      "status": "ok"
+    "options": {
+      "error": "RetryError: HTTPSConnectionPool(host='www.deribit.com', port=443): Max retries exceeded with url: /api/v2/public/get_instruments?currency=BTC&kind=option&expired=false (Caused by ResponseError('too many 503 error responses'))",
+      "status": "error"
     }
   }
 }
