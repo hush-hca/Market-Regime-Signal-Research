@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-18T13:59:42.238604+00:00",
+  "as_of": "2026-10-18T17:20:50.865202+00:00",
   "datasets": {
     "forward": {
       "completed": 45,
@@ -8,7 +8,7 @@
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/f0c09ff6619aea96f96a2c88d90d9494ee686c7594af2853ead2fa3982af0787.json",
+      "manifest": "market_binance/versions/3f8a17b8c06c0128f80ece1391c61c366ec008183a947784b76322c085e79cc3.json",
       "missing_funding_rows": 2,
       "rows": 756,
       "stale": false,
@@ -23,17 +23,17 @@
       "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/61c5750ee6e6533fd5cfc1c5da5759951225e7f5e4de7497a38cf34ed181dad3.json",
+      "manifest": "option_instruments/versions/6f4af55671588d774e380cb9132e7a411f47bed926279161959f15692838cf8d.json",
       "rows": 928,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/91028658d2dd990e8d3982e2f16e1ace5ca4967e441cd63e3e7570e6dd1f1ea6.json",
-      "rows": 430,
+      "manifest": "option_quotes/versions/be0d3acca3a4aad8d9b2adf8077c0b5d8d87cac228c00b3362e5dacfac0e9894.json",
+      "rows": 426,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/aaa53ac93630ae0067fcf5a3bcd832f2495b744f269a1253876b18a307e84df3.json",
+      "manifest": "option_settlements/versions/0a7843cb36fc3d70724e2ef3e1172e5f5637fd8a188efb04267ce16d3543c7ff.json",
       "rows": 100,
       "status": "ok"
     }
