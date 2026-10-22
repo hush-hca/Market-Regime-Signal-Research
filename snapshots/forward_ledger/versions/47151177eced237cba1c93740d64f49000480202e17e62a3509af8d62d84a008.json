@@ -1,0 +1,13 @@
+{
+  "dataset": "forward_ledger",
+  "note": "Paper observations, not actual fills. Overlapping horizons; gross price changes exclude funding and costs.",
+  "protocol": "frozen-kmeans-v1",
+  "retrieved_at": "2026-10-22T22:19:42.410048+00:00",
+  "rows": 306,
+  "schema_version": 1,
+  "sha256": "8d961dfd39d88b626aab5a2911b3a3acc010292893289abde9d816ba8f686af7",
+  "source": "as-recorded collector",
+  "synthetic": false,
+  "validation": "passed",
+  "version_id": "47151177eced237cba1c93740d64f49000480202e17e62a3509af8d62d84a008"
+}
