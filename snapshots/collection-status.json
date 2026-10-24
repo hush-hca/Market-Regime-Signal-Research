@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-23T22:07:19.566752+00:00",
+  "as_of": "2026-10-24T00:39:03.381536+00:00",
   "datasets": {
     "forward": {
       "completed": 55,
@@ -8,32 +8,33 @@
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/af70e269f8e0e9e843bc05667ba15f67eeeab77f08806a4ad0a5b79e57f5c611.json",
+      "manifest": "market_binance/versions/27f9395ad29a5423ea05bc1b1fddf57d17aa8ce05c8093b18b6df82a94545d02.json",
       "missing_funding_rows": 7,
       "rows": 761,
       "stale": false,
       "status": "ok"
     },
     "market_bybit": {
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1787529600000&end=1792713599999&limit=1000",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1787616000000&end=1792799999999&limit=1000",
       "status": "error"
     },
     "onchain": {
+      "manifest": "onchain/versions/0f9ae59020b66d7f2baf737c7ae2af79b841d79e5158a44f77aae424a54124ce.json",
       "rows": 1094,
-      "status": "cached"
+      "status": "ok"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/9d4d179ef8f592ecfd599a3264eca394b250e8dfa575091adc4ad03a5f0163bf.json",
+      "manifest": "option_instruments/versions/b668959c1230a7ef5d94ac3f963325019e9130a0d1f652b2521edf67c9989ab5.json",
       "rows": 930,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/12f40329cab8b2b351afa6b1c3a3cc43ef254b4eff1fa9790c831d9c7462e06b.json",
+      "manifest": "option_quotes/versions/464d5e91b5308ca570c0f7029025f4d8cf00766b546bd5b977d6f59614043d08.json",
       "rows": 418,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/63825a6971c8048847514dc69aa9e01af90ca8b850723081757e97b0ddc54d29.json",
+      "manifest": "option_settlements/versions/d91c40ab9229a23feb7f60b9738eed18bdb21b3568784a02f6126ca43579fc47.json",
       "rows": 100,
       "status": "ok"
     }
