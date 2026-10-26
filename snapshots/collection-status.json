@@ -1,39 +1,42 @@
 {
-  "as_of": "2026-10-26T12:55:13.421079+00:00",
+  "as_of": "2026-10-26T19:16:02.805000+00:00",
   "datasets": {
     "forward": {
-      "completed": 64,
+      "completed": 67,
       "models": 6,
-      "records": 342,
+      "records": 351,
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/92f458336ba10c9ea64d980a2939b0167be83112e345ecff7e4223f48e63c6a0.json",
-      "missing_funding_rows": 10,
+      "manifest": "market_binance/versions/6ae627eea94e35b9e7460fa6436900ce24ca280b50be364e3618bb5e21aded60.json",
+      "missing_funding_rows": 0,
       "rows": 764,
       "stale": false,
       "status": "ok"
     },
     "market_bybit": {
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1787788800000&end=1792972799999&limit=1000",
-      "status": "error"
+      "manifest": "market_bybit/versions/fdd3f947ef1879356724b8472ca4a72599e9facc3f508a44399b603cf7dc5cc3.json",
+      "missing_funding_rows": 0,
+      "rows": 757,
+      "stale": false,
+      "status": "ok"
     },
     "onchain": {
       "rows": 1094,
       "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/63dc254d1554a232f2a5f9c7a6ce4b698d3a7b4d127e0672c6eee86fb6de7d67.json",
+      "manifest": "option_instruments/versions/373f81bf727b513526f0eb62d43d2321e60c40669794a91bcfc6531e445d1dcd.json",
       "rows": 876,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/3e32eb43dc4e8801a8d44190d4a00c6605fb4b81e1beb627c6f63f65f88f6167.json",
-      "rows": 413,
+      "manifest": "option_quotes/versions/26a5e7b6a10c5bd6974f6fbb2c783d952fd03f542fff19f2302e47b3193df8f3.json",
+      "rows": 402,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/6b7131742d7843f510264ac28dfbb6e6930c7cf8c1015588c5db3f443c49afe6.json",
+      "manifest": "option_settlements/versions/eb5e45e6c6dc199dcffd09185ae53efabb86fa5cee1a6b6cfcc7dbb51f2d5384.json",
       "rows": 100,
       "status": "ok"
     }
