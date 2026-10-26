@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-26T19:16:02.805000+00:00",
+  "as_of": "2026-10-26T23:08:49.058474+00:00",
   "datasets": {
     "forward": {
       "completed": 67,
@@ -8,35 +8,32 @@
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/6ae627eea94e35b9e7460fa6436900ce24ca280b50be364e3618bb5e21aded60.json",
+      "manifest": "market_binance/versions/16fb1af7fcac5b228fd53517165e72e3c4d55aaf872a69b14cccf3dc07b89eda.json",
       "missing_funding_rows": 0,
       "rows": 764,
       "stale": false,
       "status": "ok"
     },
     "market_bybit": {
-      "manifest": "market_bybit/versions/fdd3f947ef1879356724b8472ca4a72599e9facc3f508a44399b603cf7dc5cc3.json",
-      "missing_funding_rows": 0,
-      "rows": 757,
-      "stale": false,
-      "status": "ok"
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1787788800000&end=1792972799999&limit=1000",
+      "status": "error"
     },
     "onchain": {
       "rows": 1094,
       "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/373f81bf727b513526f0eb62d43d2321e60c40669794a91bcfc6531e445d1dcd.json",
+      "manifest": "option_instruments/versions/cf938e4e701eb7a3f37d59b745e9d42d8f93f791b405e30f7d17504c4aec551e.json",
       "rows": 876,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/26a5e7b6a10c5bd6974f6fbb2c783d952fd03f542fff19f2302e47b3193df8f3.json",
-      "rows": 402,
+      "manifest": "option_quotes/versions/a72b6bdd285a00e2fd187d0990e2716a7b59c43a0fa2688cc09394eeb6505a11.json",
+      "rows": 398,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/eb5e45e6c6dc199dcffd09185ae53efabb86fa5cee1a6b6cfcc7dbb51f2d5384.json",
+      "manifest": "option_settlements/versions/48c2b1c701ffe74a221df2286130e4e7e80011402d91831c26a05522430938dc.json",
       "rows": 100,
       "status": "ok"
     }
