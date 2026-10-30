@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-30T08:35:49.321612+00:00",
+  "as_of": "2026-10-30T15:54:04.467663+00:00",
   "datasets": {
     "forward": {
       "completed": 73,
@@ -8,11 +8,8 @@
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/f6c07b962458455e5bfb54ed7fd61049be461a87ed8e580ab416decdcdd734e0.json",
-      "missing_funding_rows": 2,
-      "rows": 766,
-      "stale": true,
-      "status": "ok"
+      "error": "ValueError: Daily price rows must be contiguous; repair missing dates before research.",
+      "status": "error"
     },
     "market_bybit": {
       "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1788134400000&end=1793318399999&limit=1000",
@@ -23,17 +20,17 @@
       "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/0464855a2b33fbaba783649093e7c872308c82431532d0f9645d7a5dca578c2d.json",
-      "rows": 962,
+      "manifest": "option_instruments/versions/1729c383356158c699b9e0cf0a952619b8b1de76bfcf85fcdea815b86041353f.json",
+      "rows": 968,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/ebb4f48126d069b466206aac6333fdc5d9e24ddc1551171d4944f9b798deff9b.json",
-      "rows": 441,
+      "manifest": "option_quotes/versions/68933bb8521031c8d9a7564eae415fa63ba471a67c315357bd4f028fcb24a96d.json",
+      "rows": 451,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/89324ee54503752b1505a45b8624ddef78a8cc1e4380b42ebf3af33a61c10195.json",
+      "manifest": "option_settlements/versions/2835f46b4915d16b54358dbd1d74ff336b72d205815e2ab60e058bac767e22d2.json",
       "rows": 100,
       "status": "ok"
     }
