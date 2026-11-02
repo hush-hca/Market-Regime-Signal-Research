@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-02T07:39:16.772979+00:00",
+  "as_of": "2026-11-02T18:17:38.797063+00:00",
   "datasets": {
     "forward": {
       "completed": 73,
@@ -20,17 +20,17 @@
       "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/5237ed089103e6dba9f1df2d23f30c1b4b39a956e93e5895ce035e8bc627a063.json",
-      "rows": 956,
+      "manifest": "option_instruments/versions/b00f2c9d4f8f5494b3cdd86282a610c489bccc957acf0405c94523678f529cd0.json",
+      "rows": 898,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/ab635f7fa0f8c2babaa4d6d4a26fac2236be606dd1f0b9b8c0cd9cec9c23f1b5.json",
-      "rows": 440,
+      "manifest": "option_quotes/versions/b325f774dba561f90a0b83c96ade82d1b21a47bbb593a2f6ae1cccd5a3174d0c.json",
+      "rows": 424,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/bb2a954f93933e3cde9ec28f1926be8d531278d173284c61aa3462f852f64fc9.json",
+      "manifest": "option_settlements/versions/eca70574780b3de30cadedf2340b307caf74992cd153095f32149e1451df6f5b.json",
       "rows": 100,
       "status": "ok"
     }
