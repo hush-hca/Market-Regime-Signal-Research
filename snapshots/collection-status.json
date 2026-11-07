@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-06T19:21:12.523830+00:00",
+  "as_of": "2026-11-07T00:06:32.807429+00:00",
   "datasets": {
     "forward": {
       "completed": 73,
@@ -12,25 +12,26 @@
       "status": "error"
     },
     "market_bybit": {
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1788739200000&end=1793923199999&limit=1000",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1788825600000&end=1794009599999&limit=1000",
       "status": "error"
     },
     "onchain": {
-      "rows": 1095,
-      "status": "cached"
+      "manifest": "onchain/versions/b4233bb4067a714544882ac6eb31b4eb40b226c98a30e5609df23a4a98dbf255.json",
+      "rows": 1094,
+      "status": "ok"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/3d3aace81310cec766db890f932b891d4ea0099b5b94df2f6657b4fd6273ea40.json",
+      "manifest": "option_instruments/versions/cbef8633278ce8265ce451407924885097bf2430e69067e1999da43c25d484ab.json",
       "rows": 940,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/9fb7eb2aa53d61cce7fe39cbe3b69bde50afe8c11bdabf59a0f14308c5019521.json",
-      "rows": 411,
+      "manifest": "option_quotes/versions/1080e8a93d38f4edee4b150c84df89b64247e8bdfeef6d3fccfca3f5c883eb6d.json",
+      "rows": 408,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/a5fa2be832832e6b2bf20ae6d1deb2e909c36aa345798c907ff573f4be4fd499.json",
+      "manifest": "option_settlements/versions/60e6b9ff229fe610f483d2e7ba46cde21721c8de97623b7c327ef3141ff48430.json",
       "rows": 100,
       "status": "ok"
     }
