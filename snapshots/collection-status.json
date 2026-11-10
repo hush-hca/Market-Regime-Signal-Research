@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-10T02:03:45.598883+00:00",
+  "as_of": "2026-11-10T09:44:04.723958+00:00",
   "datasets": {
     "forward": {
       "completed": 73,
@@ -16,22 +16,21 @@
       "status": "error"
     },
     "onchain": {
-      "manifest": "onchain/versions/34f978396a9a4deb444d9e0058a762621d374a552e3cda1d229e68d56ac7dcee.json",
       "rows": 1094,
-      "status": "ok"
+      "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/c571bfe3b2555576a24d0882e8ad9b29b832be7f0acadd3b1fbc46509fcf9f4f.json",
-      "rows": 878,
+      "manifest": "option_instruments/versions/a6e813525eeeb711579f26332d841c761c62f726ee2365c6a9b964ab128e8476.json",
+      "rows": 874,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/36bebc9a7430476af9ab9bcb08f599c89511b7a21ff3b20bf02492dc095c99fa.json",
-      "rows": 402,
+      "manifest": "option_quotes/versions/ea923839e51a145b13a97b5fc31b0b80d5d585b9f1d4ad2984970db1272c17d0.json",
+      "rows": 113,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/511ceafd10204f59568c2e378a507c0c0c7108652af9906cf6fdf6577bb42723.json",
+      "manifest": "option_settlements/versions/635816cff067605702709f0fe7056d0b1fb49409576562c1f794f6ca4f9f5c1d.json",
       "rows": 100,
       "status": "ok"
     }
