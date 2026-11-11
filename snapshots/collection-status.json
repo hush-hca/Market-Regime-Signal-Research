@@ -1,37 +1,39 @@
 {
-  "as_of": "2026-11-11T02:48:09.478591+00:00",
+  "as_of": "2026-11-11T10:50:42.732284+00:00",
   "datasets": {
     "forward": {
-      "completed": 73,
+      "completed": 112,
       "models": 6,
-      "records": 369,
+      "records": 378,
       "status": "ok"
     },
     "market_binance": {
-      "error": "ValueError: Daily price rows must be contiguous; repair missing dates before research.",
-      "status": "error"
+      "manifest": "market_binance/versions/21f4f463cf698905ae8693c4465e4336d6647294637d45caff2ba8bfd7842b73.json",
+      "missing_funding_rows": 10,
+      "rows": 780,
+      "stale": false,
+      "status": "ok"
     },
     "market_bybit": {
       "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1789171200000&end=1794355199999&limit=1000",
       "status": "error"
     },
     "onchain": {
-      "manifest": "onchain/versions/441e340cffe89c4fac22118fcf8ede5891e6f94a9d15c76b3748536b0b402aa7.json",
       "rows": 1094,
-      "status": "ok"
+      "status": "cached"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/8cfa13e161c443e7c1b22432a397b60cf0cc55c201865fd4e28956158e660926.json",
-      "rows": 878,
+      "manifest": "option_instruments/versions/735846f5d9e936050bf46fe573f1f2a203a1fcf76220cb8f3c39997d6e0c1c6a.json",
+      "rows": 874,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/f47525b33220034fb57497445556e73070e6bbc8e479b46261046c74b1b104d7.json",
-      "rows": 388,
+      "manifest": "option_quotes/versions/42b92a3dfefbfb8fc1bfb1ff778430e9a2764502ffdc7816af7e51f83e8eab7d.json",
+      "rows": 401,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/5f9dbd8dc09e8f9d626add686516f5f6bfb0a7fc9a0b02b94f4edfad36f43f20.json",
+      "manifest": "option_settlements/versions/ef5b90c5322a34dd30b53c1c1b8942a847d2c3d577b7c4484c05cdca7278e834.json",
       "rows": 100,
       "status": "ok"
     }
