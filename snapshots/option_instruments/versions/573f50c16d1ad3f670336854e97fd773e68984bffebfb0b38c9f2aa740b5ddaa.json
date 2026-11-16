@@ -1,0 +1,13 @@
+{
+  "dataset": "option_instruments",
+  "license": "Provider public API terms; review before redistribution",
+  "retrieved_at": "2026-11-16T09:35:08.068518+00:00",
+  "rows": 982,
+  "schema_version": 1,
+  "sha256": "89b69053e8a6b4017ace06c606c8b723e0263bee73e4820187e0562651ff5bae",
+  "source": "deribit",
+  "synthetic": false,
+  "validation": "passed",
+  "version_id": "573f50c16d1ad3f670336854e97fd773e68984bffebfb0b38c9f2aa740b5ddaa",
+  "vintage": "observed live"
+}
