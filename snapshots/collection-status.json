@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-16T20:25:25.135228+00:00",
+  "as_of": "2026-11-17T03:48:47.202358+00:00",
   "datasets": {
     "forward": {
       "completed": 119,
@@ -8,32 +8,33 @@
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/647bd3592b17e5d7985448022af64884973c44356f16863eed984cd07e157e44.json",
+      "manifest": "market_binance/versions/9d6c755c7d92451704c5db32c9789a36c0acfc44e401ee4e1664adcf42dd44b5.json",
       "missing_funding_rows": 15,
       "rows": 785,
       "stale": false,
       "status": "ok"
     },
     "market_bybit": {
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1789603200000&end=1794787199999&limit=1000",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1789689600000&end=1794873599999&limit=1000",
       "status": "error"
     },
     "onchain": {
-      "rows": 1094,
-      "status": "cached"
+      "manifest": "onchain/versions/430572220ff7bf0c0e6450fc62aee64b6d7d54b0ba140a9d24647bba2075e216.json",
+      "rows": 1095,
+      "status": "ok"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/0f5e1827d21388d17245edfc8cac658c7f7f112bea639d7ec113a12df299c32e.json",
+      "manifest": "option_instruments/versions/0b83962e61fe6ad8be28246c18aacd2c0c2784563a813cd6feb737060b9a3690.json",
       "rows": 982,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/2ebe7e34f22a92252129d8b2f0d1e3235ecbb14fc25ec0ff0fa4562ab001ea13.json",
+      "manifest": "option_quotes/versions/dbf2ff7f12a6fffd6eb96de8997b16b4670951952a18f5ab294a6bd1dab2db96.json",
       "rows": 433,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/69a1b0e1d545206d20bc154a24ec8268176a93da01ab8b32f1b7441855be2b28.json",
+      "manifest": "option_settlements/versions/288aa19b79ed90534a154e5a9e8932bc49655e7d4781882322371d827c1a1b49.json",
       "rows": 100,
       "status": "ok"
     }
