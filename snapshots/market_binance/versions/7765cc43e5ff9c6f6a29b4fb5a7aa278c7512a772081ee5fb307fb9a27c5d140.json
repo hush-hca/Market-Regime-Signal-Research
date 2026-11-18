@@ -1,0 +1,28 @@
+{
+  "api_error": "HTTPError: 451 Client Error:  for url: https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=1d&startTime=1789776000000&endTime=1794959999999&limit=1000",
+  "checksum_verified": true,
+  "dataset": "market_binance",
+  "funding_unit": "sum of realized funding fractions per UTC day",
+  "missing_archive_files": [
+    "monthly/klines/BTCUSDT/1d/BTCUSDT-1d-2026-11.zip",
+    "monthly/fundingRate/BTCUSDT/BTCUSDT-fundingRate-2026-11.zip",
+    "daily/klines/BTCUSDT/1d/BTCUSDT-1d-2026-11-17.zip",
+    "daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-11-17.zip"
+  ],
+  "note": "Current-vintage official archives. Monthly funding publication can lag prices; missing values are not filled.",
+  "observation_end": "2026-11-16T00:00:00+00:00",
+  "oi_note": "Last published intraday USD open-interest observation per UTC day.",
+  "price_instrument": "USDT perpetual",
+  "retrieved_at": "2026-11-18T04:15:40.518724+00:00",
+  "rows": 786,
+  "schema_version": 1,
+  "sha256": "480365fca02889d4d4a7d05b59efe2271476a28c5695702e774d998a838acc0b",
+  "source": "binance",
+  "symbol": "BTCUSDT",
+  "synthetic": false,
+  "transport": "official public archive",
+  "validation": "passed",
+  "version_id": "7765cc43e5ff9c6f6a29b4fb5a7aa278c7512a772081ee5fb307fb9a27c5d140",
+  "vintage": "current; revisions retained as immutable snapshots",
+  "volume_unit": "USDT quote turnover"
+}
