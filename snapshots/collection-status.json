@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-19T21:28:40.853756+00:00",
+  "as_of": "2026-11-20T03:08:49.920645+00:00",
   "datasets": {
     "forward": {
       "completed": 122,
@@ -8,32 +8,33 @@
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/be3136ed32bf39fb3968652dc85349a2161d0e005549d12d7f6bb4889cfe9d3f.json",
+      "manifest": "market_binance/versions/febb981ec5549e511135af2cd74a76d3d4b6274983ff9efd5e9653c609139253.json",
       "missing_funding_rows": 18,
       "rows": 788,
       "stale": false,
       "status": "ok"
     },
     "market_bybit": {
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1789862400000&end=1795046399999&limit=1000",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1789948800000&end=1795132799999&limit=1000",
       "status": "error"
     },
     "onchain": {
-      "rows": 1095,
-      "status": "cached"
+      "manifest": "onchain/versions/98f69b9a9e6d3cb102fcf0ca5915aa4e8772acee3350165ee9fcfaf87acd3797.json",
+      "rows": 1094,
+      "status": "ok"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/428056a4307d421a183fd0a2a24364b4582ba49b49a72ef47e8976d807660368.json",
-      "rows": 978,
+      "manifest": "option_instruments/versions/c999fe55f8c81e918dd2610ec0b23de963d600ce5df3da58779f47e144d6ef7e.json",
+      "rows": 990,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/bf10ad4e28ed6af09218e3db7772e98a5f2aad14a8e1c59048e64ce9a46b4c62.json",
-      "rows": 431,
+      "manifest": "option_quotes/versions/b18ae7f515ead8a20cfa556da68eb8eb429504880edadf2f347a0579f9be2fdb.json",
+      "rows": 428,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/09a9f8f9d4b2661a923753585a4eb2c3b6c79362718ab6ca70f6f432887a8aa1.json",
+      "manifest": "option_settlements/versions/a12c2238725114c0af873ba89f002351d3ca1c4b545fee78d58bba20dd27e42f.json",
       "rows": 100,
       "status": "ok"
     }
