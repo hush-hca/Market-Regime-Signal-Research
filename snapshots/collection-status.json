@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-20T20:08:49.231223+00:00",
+  "as_of": "2026-11-21T01:29:00.111564+00:00",
   "datasets": {
     "forward": {
       "completed": 124,
@@ -8,23 +8,35 @@
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/dbac95ff965976729be1abfea22a23dec002f04b4c6e32c2413919a1bb38ffc2.json",
+      "manifest": "market_binance/versions/4a6cdc8d81d9320efc0f65c23ce20f58ed414fd9bfe1cdbde494808932b27133.json",
       "missing_funding_rows": 19,
       "rows": 789,
       "stale": false,
       "status": "ok"
     },
     "market_bybit": {
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1789948800000&end=1795132799999&limit=1000",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1790035200000&end=1795219199999&limit=1000",
       "status": "error"
     },
     "onchain": {
+      "manifest": "onchain/versions/fae7250fec265b3f6b82a3d1ebda6e304d5e5f85fd176493d0df7f1ade9cac66.json",
       "rows": 1094,
-      "status": "cached"
+      "status": "ok"
     },
-    "options": {
-      "error": "RetryError: HTTPSConnectionPool(host='www.deribit.com', port=443): Max retries exceeded with url: /api/v2/public/get_instruments?currency=BTC&kind=option&expired=false (Caused by ResponseError('too many 503 error responses'))",
-      "status": "error"
+    "option_instruments": {
+      "manifest": "option_instruments/versions/649c9445eea14be7bca966cc66485bca60df14111724bea2391746194451317b.json",
+      "rows": 1008,
+      "status": "ok"
+    },
+    "option_quotes": {
+      "manifest": "option_quotes/versions/d916efaef9fc18b3f4b7173f7f18dcf860f92b4cd3552a7f1dfd9a115a95b730.json",
+      "rows": 431,
+      "status": "ok"
+    },
+    "option_settlements": {
+      "manifest": "option_settlements/versions/4bedb17563590aac55d704e3101503a8a9fb2ba65dc0194e22bd59ee6b406609.json",
+      "rows": 100,
+      "status": "ok"
     }
   }
 }
