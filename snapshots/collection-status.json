@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-22T18:31:02.230813+00:00",
+  "as_of": "2026-11-23T00:16:57.616715+00:00",
   "datasets": {
     "forward": {
       "completed": 128,
@@ -8,32 +8,33 @@
       "status": "ok"
     },
     "market_binance": {
-      "manifest": "market_binance/versions/0292ce59c763254135c24c33ca163b520936076ee788e70710c08dae7f555da8.json",
+      "manifest": "market_binance/versions/e4563ae3a3b8e3f7e227115a5c368ab88056a3d99e450eedf79e88885885520c.json",
       "missing_funding_rows": 21,
       "rows": 791,
       "stale": false,
       "status": "ok"
     },
     "market_bybit": {
-      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1790121600000&end=1795305599999&limit=1000",
+      "error": "HTTPError: 403 Client Error: Forbidden for url: https://api.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=D&start=1790208000000&end=1795391999999&limit=1000",
       "status": "error"
     },
     "onchain": {
+      "manifest": "onchain/versions/b3a64886a491accf27f6ce5dec5560cc8cd9a462bf69e25c0aaa77f1b923cf65.json",
       "rows": 1094,
-      "status": "cached"
+      "status": "ok"
     },
     "option_instruments": {
-      "manifest": "option_instruments/versions/7100a57c89fa4793f882e6a3fcecfc8a544ad5868720c2bc898388dc603a6cb9.json",
+      "manifest": "option_instruments/versions/c40e1095c7bd44123b20e65faaa3c57d1726359c819c03774e8d14515c5f619c.json",
       "rows": 1014,
       "status": "ok"
     },
     "option_quotes": {
-      "manifest": "option_quotes/versions/d0969bbfc45458863ca231b99b3b41b63e09d428b247491451e1f3f3a2d5da5e.json",
+      "manifest": "option_quotes/versions/9f3d9d69c50c7cbeb3910879be550254cc5d5bba0856c45657966fc1582c7c89.json",
       "rows": 452,
       "status": "ok"
     },
     "option_settlements": {
-      "manifest": "option_settlements/versions/776daf1ed83ebd0544d49abe45c0e99c91c63e1c13e1a08249d1bb9b59ae5053.json",
+      "manifest": "option_settlements/versions/f99451df9c61108bbac36df247dbd308c412e3260e33c668055df407125e781b.json",
       "rows": 100,
       "status": "ok"
     }
